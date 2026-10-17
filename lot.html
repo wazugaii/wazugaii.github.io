@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FXロット計算ツール｜損切り幅と許容損失からロット数を計算（円口座・ゴールド対応・無料）</title>
+<meta name="description" content="許容損失（円）と損切りまでの値幅を入れるだけで、適切なロット数を計算。ドル円・ユーロドルなどのFX、ゴールド（XAUUSD）に対応。円口座でのレート換算も自動。登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/lot.html">
+<link rel="stylesheet" href="style.css">
+<style>:root{--accent:#1f2a44;--accent-soft:#e6ebf5}@media (prefers-color-scheme: dark){:root{--accent:#9db4dd;--accent-soft:#232c3d}}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a></header>
+<main>
+<h1>FX ロット計算ツール</h1>
+<p class="lead">「1回の負けはこの金額まで」と決めた額と、損切りまでの値幅から、ロット数を計算します。円口座で、損益がドルなどになる銘柄（ユーロドル・ゴールドなど）は、レートで円に換算します。</p>
+
+<div class="card">
+  <label for="sym">銘柄</label>
+  <select id="sym">
+    <option value="usdjpy">ドル円（USDJPY）など、〇〇/円の通貨ペア</option>
+    <option value="xxxusd">ユーロドル（EURUSD）など、〇〇/ドルの通貨ペア</option>
+    <option value="gold">ゴールド（XAUUSD）</option>
+  </select>
+
+  <label for="risk">1回の損失の上限（円）</label>
+  <input id="risk" type="number" inputmode="numeric" min="0" step="100" value="1000">
+
+  <label for="dist" id="distLabel">損切りまでの値幅（pips）</label>
+  <input id="dist" type="number" inputmode="decimal" min="0" step="0.1" value="20">
+
+  <label for="rate" id="rateLabel">ドル円のレート<small>損益がドルの銘柄を、円に換算するのに使います</small></label>
+  <input id="rate" type="number" inputmode="decimal" min="0" step="0.01" value="150">
+
+  <label for="cs">1ロットの数量（契約サイズ）<small>業者によって違います。多くは FX＝100,000通貨、ゴールド＝100オンス</small></label>
+  <input id="cs" type="number" inputmode="numeric" min="0" value="100000">
+
+  <div class="result" aria-live="polite">
+    <div>ロット数</div>
+    <div class="big" id="lots">―</div>
+    <dl>
+      <dt>そのロットでの損失</dt><dd id="loss">―</dd>
+      <dt>0.01ロットあたりの損失</dt><dd id="per">―</dd>
+    </dl>
+    <p class="warn" id="minwarn" hidden>最小ロット（0.01）でも上限を超えます。損切りを近くするか、見送りましょう。</p>
+  </div>
+  <p class="note">ロット ＝ 損失の上限 ÷（値幅 × 契約サイズ × 円への換算レート）。0.01ロット単位で切り捨てています。</p>
+</div>
+
+<a class="cta" href="https://www.gogojungle.co.jp/tools/indicators/88084" rel="noopener">
+  <strong>MT5 のチャート上で、損切り線をドラッグするだけで計算するなら</strong><br>
+  損切り線を動かすと、損失が決めた額になるロットを自動で計算する MT5 用パネル（無料版あり）。業者の計算と契約サイズの計算を突き合わせて、ゴールドなどの計算ずれも防ぎます。
+</a>
+
+<h2>ロット計算でありがちな失敗</h2>
+<p><strong>1ティックの価値が円に換算されていない。</strong>円口座でゴールドや暗号資産を取引すると、業者によっては「1ティックの価値」がドルのまま返ってきて、そのまま使うとロットが100倍以上大きくなることがあります。</p>
+<p><strong>pips の大きさを取り違える。</strong>ドル円の1pipは0.01円、ユーロドルの1pipは0.0001ドルです。ゴールドは業者やツールによって「pips」の大きさが違うので、このツールでは価格の差（ドル）で入れます。</p>
+<p>くわしくは<a href="https://note.com/fresh_snake1249/n/nf74a3ac41006">ロットが161倍に？円口座のロット計算でありがちな失敗</a>にまとめています。</p>
+<p class="note">このツールは計算の補助です。売買のタイミングや方向をすすめるものではありません。実際の注文の前に、デモ口座などで損益を確かめてください。</p>
+</main>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。</footer>
+<script>
+const $ = id => document.getElementById(id);
+const num = id => Number($(id).value) || 0;
+const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+function setup() {
+  const s = $("sym").value;
+  $("distLabel").firstChild.textContent = s === "gold" ? "損切りまでの値幅（ドル。例：1,950.00→1,945.00 なら 5）" : "損切りまでの値幅（pips）";
+  $("dist").value = s === "gold" ? 5 : 20;
+  $("cs").value = s === "gold" ? 100 : 100000;
+  $("rate").disabled = s === "usdjpy";
+  calc();
+}
+function calc() {
+  const s = $("sym").value;
+  let priceDist = num("dist");
+  if (s === "usdjpy") priceDist *= 0.01;
+  if (s === "xxxusd") priceDist *= 0.0001;
+  const conv = s === "usdjpy" ? 1 : num("rate");
+  const perLot = priceDist * num("cs") * conv;
+  if (!(perLot > 0) || !(num("risk") > 0)) { $("lots").textContent = "―"; return; }
+  const lots = Math.floor(num("risk") / perLot / 0.01 + 1e-9) * 0.01;
+  $("minwarn").hidden = lots >= 0.01;
+  $("lots").textContent = lots >= 0.01 ? lots.toFixed(2) + " ロット" : "0.01 未満";
+  $("loss").textContent = lots >= 0.01 ? yen(perLot * lots) : yen(perLot * 0.01) + "（0.01ロット）";
+  $("per").textContent = yen(perLot * 0.01);
+}
+$("sym").addEventListener("change", setup);
+document.querySelectorAll("input").forEach(e => e.addEventListener("input", calc));
+setup();
+</script>
+</body>
+</html>
