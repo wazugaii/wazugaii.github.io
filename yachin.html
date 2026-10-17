@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>家賃の目安計算｜手取りからいくらの部屋に住める？（一人暮らし・無料）</title>
+<meta name="description" content="手取り月収を入れるだけで、家賃の目安（手取りの25%・30%・33%）と、その家賃で暮らしたときに毎月残るお金を計算します。一人暮らしの部屋探しに。登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/yachin.html">
+<link rel="stylesheet" href="style.css">
+<style>:root{--accent:#1e5c4a;--accent-soft:#e3efe9}@media (prefers-color-scheme: dark){:root{--accent:#7fd1ae;--accent-soft:#1d3229}}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a></header>
+<main>
+<h1>手取りから家賃の目安を計算</h1>
+<p class="lead">手取り月収を入れると、無理のない家賃の目安と、その家賃で暮らしたときに毎月いくら残るかを計算します。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <label for="tedori">手取り月収（円）<small>給料から税金・社会保険料が引かれたあと、口座に入る額</small></label>
+  <input id="tedori" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：180000">
+  <label for="living">家賃以外の生活費（円・1か月）<small>食費・光熱費・通信費・日用品・交際費など。わからなければ 10万円前後が目安</small></label>
+  <input id="living" type="number" inputmode="numeric" min="0" step="1000" value="100000">
+
+  <div class="result" aria-live="polite">
+    <div>家賃の目安（手取りの3分の1まで）</div>
+    <div class="big" id="max">― 円</div>
+    <table style="margin-top:10px">
+      <tr><th>手取りに対する割合</th><th>家賃</th><th>毎月残るお金</th></tr>
+      <tr><td>25%（ゆとり）</td><td id="r25">―</td><td id="l25">―</td></tr>
+      <tr><td>30%（標準）</td><td id="r30">―</td><td id="l30">―</td></tr>
+      <tr><td>33%（上限の目安）</td><td id="r33">―</td><td id="l33">―</td></tr>
+    </table>
+    <p class="note" style="margin:8px 0 0">家賃は管理費・共益費こみで考えます。毎月残るお金 ＝ 手取り − 家賃 − 家賃以外の生活費。</p>
+  </div>
+</div>
+
+<a class="cta" href="shoki.html">
+  <strong>引っ越しの初期費用も計算する</strong><br>
+  家賃から、敷金・礼金・仲介手数料・引っ越し代・家具家電までの合計を計算できます
+</a>
+
+<h2>家賃の考え方</h2>
+<p><strong>「手取りの3分の1」は上限の目安です。</strong>貯金をしたい人や、奨学金の返済がある人は、25%くらいに抑えると楽になります。</p>
+<p><strong>家賃は一度決めると下げにくい固定費です。</strong>部屋を探す前に、手取りから逆算しておくのがおすすめです。</p>
+<p>くわしくは<a href="https://note.com/fresh_snake1249/n/n0c0d3674bda7">一人暮らし、手取りいくらあれば暮らせる？</a>にまとめています。</p>
+<a class="cta" href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe" rel="noopener">
+  <strong>暮らし始めてからのお金の管理には</strong><br>
+  予算と実績の比較、固定費の見直しができる「一人暮らしの家計簿・予算シート」（Excel / Google スプレッドシート・500円）
+</a>
+</main>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。</footer>
+<script>
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+function calc() {
+  const t = Number($("tedori").value) || 0, l = Number($("living").value) || 0;
+  if (!t) { $("max").textContent = "― 円"; return; }
+  const f = p => Math.floor(t * p / 1000) * 1000;
+  $("max").textContent = yen(f(1 / 3));
+  [[25, 0.25], [30, 0.30], [33, 1 / 3]].forEach(([k, p]) => {
+    const r = f(p);
+    $("r" + k).textContent = yen(r);
+    const left = t - r - l;
+    $("l" + k).textContent = yen(left);
+    $("l" + k).style.color = left < 0 ? "var(--warn)" : "";
+  });
+}
+document.querySelectorAll("input").forEach(e => e.addEventListener("input", calc));
+</script>
+</body>
+</html>
