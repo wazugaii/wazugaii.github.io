@@ -7,13 +7,14 @@
 <meta name="description" content="支払った医療費と所得を入れるだけで、医療費控除の額と戻る税金の目安を計算。10万円または所得の5%のルール、セルフメディケーション税制との比較にも対応。登録不要・無料。">
 <link rel="canonical" href="https://wazugaii.github.io/iryohi.html">
 <link rel="stylesheet" href="style.css">
+<style>details.opt{margin-top:14px}details.opt summary{cursor:pointer;color:var(--sub);font-size:14px}</style>
 
 </head>
 <body>
 <header><a href="index.html">← お金の計算ツール</a><span class="pr">このページには広告（PR）が含まれます</span></header>
 <main>
 <h1>医療費控除の計算シミュレーター</h1>
-<p class="lead">1年間に支払った医療費と所得を入れると、医療費控除の額と、戻る・減る税金の目安を計算します。市販薬のセルフメディケーション税制とも比べられます。入力した数字はどこにも送信されません。</p>
+<p class="lead">1年間に支払った医療費と年収を入れると、医療費控除の額と、戻る・減る税金の目安を計算します。市販薬のセルフメディケーション税制とも比べられます。入力した数字はどこにも送信されません。</p>
 
 <div class="card">
   <label for="paid">1年間に支払った医療費の合計（円）
@@ -24,13 +25,18 @@
     <small>生命保険の入院給付金、高額療養費など。なければ 0</small></label>
   <input id="hoten" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：0" value="0">
 
-  <label for="shotoku">総所得金額等（円）
-    <small>会社員なら、源泉徴収票の「給与所得控除後の金額」がおおよその目安</small></label>
-  <input id="shotoku" type="number" inputmode="numeric" min="0" step="10000" placeholder="例：4000000">
+  <label for="salary">あなたの年収（額面・万円）
+    <small>医療費控除を受ける人の年収。ボーナスを含む、税金などが引かれる前の金額</small></label>
+  <input id="salary" type="number" inputmode="numeric" min="0" step="10" placeholder="例：400">
 
-  <label for="kazei">課税所得（円）
-    <small>所得税の税率を決めるのに使います。わからなければ、総所得金額等から100〜150万円ほど引いた額が目安</small></label>
-  <input id="kazei" type="number" inputmode="numeric" min="0" step="10000" placeholder="例：2500000">
+  <details class="opt"><summary>所得の金額で入れる（自営業・年金の人、わかる人だけ）</summary>
+    <label for="shotoku">総所得金額等（円）
+      <small>会社員なら、源泉徴収票の「給与所得控除後の金額」。入れると年収より優先します</small></label>
+    <input id="shotoku" type="number" inputmode="numeric" min="0" step="10000" placeholder="例：2760000">
+    <label for="kazei">課税所得（円）
+      <small>所得税の税率を決めるのに使います。空欄なら自動で見積もります</small></label>
+    <input id="kazei" type="number" inputmode="numeric" min="0" step="10000" placeholder="例：1280000">
+  </details>
 
   <label for="otc">うち、セルフメディケーション対象の市販薬の購入額（円・任意）</label>
   <input id="otc" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：20000" value="0">
@@ -66,20 +72,25 @@
 </main>
 <nav class="related"><strong>ほかの無料ツール：</strong><a href="furusato.html">ふるさと納税の上限</a> ／ <a href="fukugyo.html">副業の20万円ルール</a> ／ <a href="gensen.html">源泉徴収税額</a> ／ <a href="yachin.html">手取りから家賃の目安</a> ／ <a href="shoki.html">一人暮らしの初期費用</a> ／ <a href="hiwari.html">家賃の日割り</a> ／ <a href="koteihi.html">固定費の見直し</a> ／ <a href="denki.html">電気代</a> ／ <a href="chokin.html">貯金シミュレーター</a> ／ <a href="yukyu.html">有給休暇の日数</a> ／ <a href="lot.html">FX ロット計算</a></nav>
 <footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。 ／ <a href="about.html">運営者情報・プライバシーポリシー</a></footer>
+<script src="tax.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const num = id => Number($(id).value) || 0;
 const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
-function rateOf(k) {
-  if (k <= 1949000) return 0.05; if (k <= 3299000) return 0.10; if (k <= 6949000) return 0.20;
-  if (k <= 8999000) return 0.23; if (k <= 17999000) return 0.33; if (k <= 39999000) return 0.40; return 0.45;
-}
 function calc() {
-  if ($("paid").value === "" || $("shotoku").value === "") { $("kojo").textContent = "― 円"; return; }
-  const ashi = Math.min(100000, Math.floor(num("shotoku") * 0.05));
+  let shotoku, kazei;
+  if ($("shotoku").value !== "") {
+    shotoku = num("shotoku");
+    kazei = $("kazei").value === "" ? Math.max(0, shotoku - 950000) : num("kazei");
+  } else if (num("salary") > 0) {
+    const e = TAX.estimate({ salary: num("salary") * 10000 });
+    shotoku = e.kyuyoShotoku; kazei = e.kazeiShotoku;
+  }
+  if ($("paid").value === "" || shotoku == null) { $("kojo").textContent = "― 円"; ["ashi", "tax", "smk", "smtax"].forEach(i => $(i).textContent = "―"); $("which").textContent = ""; return; }
+  const ashi = Math.min(100000, Math.floor(shotoku * 0.05));
   const kojo = Math.min(2000000, Math.max(0, num("paid") - num("hoten") - ashi));
-  const r = rateOf($("kazei").value === "" ? Math.max(0, num("shotoku") - 1300000) : num("kazei"));
-  const k = r * 1.021 + 0.1;
+  const r = TAX.rateOf(kazei);
+  const k = (kazei > 0 ? r * 1.021 : 0) + 0.1;
   const smk = Math.min(88000, Math.max(0, num("otc") - 12000));
   $("kojo").textContent = yen(kojo);
   $("ashi").textContent = yen(ashi);
@@ -89,7 +100,7 @@ function calc() {
   $("which").textContent = (kojo === 0 && smk === 0) ? "今の数字では、どちらも控除はありません。"
     : (kojo >= smk ? "医療費控除のほうが得です。" : "セルフメディケーション税制のほうが得です。");
 }
-["paid", "hoten", "shotoku", "kazei", "otc"].forEach(i => $(i).addEventListener("input", calc));
+document.querySelectorAll("input").forEach(e => e.addEventListener("input", calc));
 </script>
 </body>
 </html>

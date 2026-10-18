@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ふるさと納税の上限シミュレーター｜住民税決定通知書の数字で計算（無料）</title>
-<meta name="description" content="住民税決定通知書の「所得割額」と「課税所得」を入れるだけで、ふるさと納税の上限（自己負担2,000円で済む寄附額）の目安を計算します。総務省の計算式を使用。登録不要・無料。">
+<title>ふるさと納税の上限シミュレーター｜年収と家族構成を選ぶだけ・住民税決定通知書にも対応（無料）</title>
+<meta name="description" content="年収と家族構成を選ぶだけで、または住民税決定通知書の「所得割額」と「課税所得」を入れて、ふるさと納税の上限（自己負担2,000円で済む寄附額）の目安を計算します。総務省の計算式を使用。登録不要・無料。">
 <link rel="canonical" href="https://wazugaii.github.io/furusato.html">
 <link rel="stylesheet" href="style.css">
+<style>.mode{display:grid;gap:6px;margin-top:4px}.mode label{font-weight:400;margin:0;display:flex;gap:6px;align-items:center}details.opt{margin-top:14px}details.opt summary{cursor:pointer;color:var(--sub);font-size:14px}</style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"住民税の所得割額はどこに書いてありますか？","acceptedAnswer":{"@type":"Answer","text":"会社員なら毎年5〜6月に会社から渡される「住民税決定通知書（特別徴収税額の決定通知書）」の「所得割額」の欄です。市町村民税と都道府県民税の合計を入れます。"}},
@@ -19,16 +20,39 @@
 <header><a href="index.html">← お金の計算ツール</a><span class="pr">このページには広告（PR）が含まれます</span></header>
 <main>
 <h1>ふるさと納税の上限シミュレーター</h1>
-<p class="lead">住民税決定通知書の2つの数字を入れるだけで、自己負担2,000円で済む寄附額の目安を計算します。入力した数字はどこにも送信されません。</p>
+<p class="lead">年収と家族構成を選ぶだけで、自己負担2,000円で済む寄附額の目安を計算します。住民税決定通知書があれば、その数字でより正確に計算できます。入力した数字はどこにも送信されません。</p>
 
 <div class="card">
-  <label for="shotoku">住民税の所得割額（円）
-    <small>決定通知書の「所得割額」。市町村民税と都道府県民税の合計</small></label>
-  <input id="shotoku" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：200000">
+  <label>どちらで計算しますか</label>
+  <div class="mode">
+    <label><input type="radio" name="mode" value="nen" checked> 年収から（かんたん）</label>
+    <label><input type="radio" name="mode" value="tsuchi"> 住民税決定通知書の数字で（より正確）</label>
+  </div>
 
-  <label for="kazei">課税所得（円）
-    <small>決定通知書の「課税標準」の総所得金額など。所得税の税率を決めるのに使います</small></label>
-  <input id="kazei" type="number" inputmode="numeric" min="0" step="10000" placeholder="例：3000000">
+  <div id="m-nen">
+    <label for="salary">今年の年収（額面・万円）<small>ボーナスを含む、税金などが引かれる前の金額。源泉徴収票の「支払金額」</small></label>
+    <input id="salary" type="number" inputmode="numeric" min="0" step="10" placeholder="例：400">
+    <label for="spouse">配偶者</label>
+    <select id="spouse"><option value="0">いない・共働き（扶養していない）</option><option value="1">扶養している（配偶者の年収123万円以下）</option></select>
+    <label for="ippan">扶養している家族（16〜18歳・23歳以上）</label>
+    <select id="ippan"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+    <label for="tokutei">扶養している家族（19〜22歳）</label>
+    <select id="tokutei"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+    <p class="note">15歳以下の子どもは、ふるさと納税の上限に影響しないので入れなくて大丈夫です。</p>
+    <details class="opt"><summary>社会保険料を自分で入れる（わかる人だけ）</summary>
+      <label for="shaho">社会保険料（1年分・円）<small>入れなければ年収の15%として計算します。源泉徴収票の「社会保険料等の金額」</small></label>
+      <input id="shaho" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：600000">
+    </details>
+  </div>
+
+  <div id="m-tsuchi" hidden>
+    <label for="shotoku">住民税の所得割額（円）
+      <small>決定通知書の「所得割額」。市町村民税と都道府県民税の合計</small></label>
+    <input id="shotoku" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：200000">
+    <label for="kazei">課税所得（円）
+      <small>決定通知書の「課税標準」の総所得金額など。所得税の税率を決めるのに使います</small></label>
+    <input id="kazei" type="number" inputmode="numeric" min="0" step="10000" placeholder="例：3000000">
+  </div>
 
   <label for="done">今年すでに寄附した額（円・任意）</label>
   <input id="done" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：20000">
@@ -43,7 +67,7 @@
     </dl>
     <p class="warn" id="over" hidden>すでに上限の目安を超えています。超えた分は、ほぼ自己負担になります。</p>
   </div>
-  <p class="note">計算式：所得割額 × 20% ÷（90% − 所得税率 × 1.021）＋ 2,000円（総務省の計算式。1,000円未満切り捨て）。住宅ローン控除・医療費控除などがある場合や、今年の収入が去年と大きく違う場合は、上限が変わります。</p>
+  <p class="note">計算式：住民税の所得割額 × 20% ÷（90% − 所得税率 × 1.021）＋ 2,000円（総務省の計算式。1,000円未満切り捨て）。「年収から」は、社会保険料を年収の15%として見積もった目安です。住宅ローン控除・医療費控除・iDeCo などがある場合は、上限が変わります。</p>
 </div>
 
 <a class="cta" href="https://note.com/fresh_snake1249/n/naddcc3749ec0" rel="noopener">
@@ -79,24 +103,27 @@
 </main>
 <nav class="related"><strong>ほかの無料ツール：</strong><a href="iryohi.html">医療費控除</a> ／ <a href="fukugyo.html">副業の20万円ルール</a> ／ <a href="gensen.html">源泉徴収税額</a> ／ <a href="yachin.html">手取りから家賃の目安</a> ／ <a href="shoki.html">一人暮らしの初期費用</a> ／ <a href="hiwari.html">家賃の日割り</a> ／ <a href="koteihi.html">固定費の見直し</a> ／ <a href="denki.html">電気代</a> ／ <a href="chokin.html">貯金シミュレーター</a> ／ <a href="yukyu.html">有給休暇の日数</a> ／ <a href="lot.html">FX ロット計算</a></nav>
 <footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。 ／ <a href="about.html">運営者情報・プライバシーポリシー</a></footer>
+<script src="tax.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
-function rateOf(k) {
-  if (k <= 1949000) return 0.05;
-  if (k <= 3299000) return 0.10;
-  if (k <= 6949000) return 0.20;
-  if (k <= 8999000) return 0.23;
-  if (k <= 17999000) return 0.33;
-  if (k <= 39999000) return 0.40;
-  return 0.45;
-}
+function clear() { $("limit").textContent = "― 円"; ["safe", "rate", "left"].forEach(i => $(i).textContent = "―"); $("over").hidden = true; }
 function calc() {
-  const s = Number($("shotoku").value), k = Number($("kazei").value), d = Number($("done").value) || 0;
-  if (!(s > 0) || !($("kazei").value !== "" && k >= 0)) {
-    $("limit").textContent = "― 円"; ["safe", "rate", "left"].forEach(i => $(i).textContent = "―"); $("over").hidden = true; return;
+  const mode = document.querySelector("input[name=mode]:checked").value;
+  $("m-nen").hidden = mode !== "nen"; $("m-tsuchi").hidden = mode !== "tsuchi";
+  let s, r;
+  if (mode === "nen") {
+    const salary = Number($("salary").value) * 10000;
+    if (!(salary > 0)) return clear();
+    const e = TAX.estimate({ salary, spouse: $("spouse").value === "1", ippan: +$("ippan").value, tokutei: +$("tokutei").value, shaho: $("shaho").value });
+    s = e.shotokuwari; r = e.rate;
+  } else {
+    s = Number($("shotoku").value); const k = Number($("kazei").value);
+    if (!(s > 0) || $("kazei").value === "" || k < 0) return clear();
+    r = TAX.rateOf(k);
   }
-  const r = rateOf(k);
+  const d = Number($("done").value) || 0;
+  if (!(s > 0)) { clear(); $("limit").textContent = "0 円（住民税の所得割がかかりません）"; return; }
   const limit = Math.floor((s * 0.2 / (0.9 - r * 1.021) + 2000) / 1000) * 1000;
   $("limit").textContent = yen(limit);
   $("safe").textContent = yen(Math.floor(limit * 0.9 / 1000) * 1000);
@@ -104,7 +131,8 @@ function calc() {
   $("left").textContent = yen(limit - d);
   $("over").hidden = !(d > limit);
 }
-["shotoku", "kazei", "done"].forEach(i => $(i).addEventListener("input", calc));
+document.querySelectorAll("input,select").forEach(e => e.addEventListener("input", calc));
+calc();
 </script>
 </body>
 </html>
