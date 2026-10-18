@@ -84,3 +84,4 @@ button.add { font-size: 15px; padding: 8px 14px; border: 1px solid var(--line); 
 header .pr, p.pr { float: right; font-size: 12px; color: var(--sub); }
 p.pr { float: none; text-align: right; }
 footer a { color: inherit; }
+.related { max-width: 760px; margin: 0 auto; padding: 16px; font-size: 14px; line-height: 2; }
