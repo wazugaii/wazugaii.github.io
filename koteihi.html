@@ -8,9 +8,19 @@
 <link rel="canonical" href="https://wazugaii.github.io/koteihi.html">
 <link rel="stylesheet" href="style.css">
 <style>
-.grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:6px;align-items:center}
-.grid input,.grid select{font-size:15px;padding:6px 8px}.grid .h{font-size:13px;color:var(--sub);font-weight:700}
-@media (max-width:520px){.grid{grid-template-columns:1fr 1fr}.grid .h:nth-child(n+3){display:none}}</style>
+.item{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:10px;background:var(--bg)}
+.item .top{display:flex;gap:8px;align-items:center}
+.item .top input{font-weight:700;font-size:16px;padding:6px 8px}
+.item .del{border:0;background:none;color:var(--sub);font-size:20px;cursor:pointer;line-height:1;flex:none}
+.item .sel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px}
+.item .sel label{margin:0;font-size:12px;font-weight:400;color:var(--sub)}
+.item .sel input,.item .sel select{font-size:16px;padding:8px 10px}
+.item .save{margin-top:4px;font-size:13px;font-weight:700;color:var(--good)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+.chips button{font-size:14px;padding:7px 12px;border:1px solid var(--field-line);border-radius:999px;background:var(--field);color:var(--text);cursor:pointer}
+.chips button:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:420px){.item .sel{grid-template-columns:1fr 1fr}.item .sel label:last-child{grid-column:1/-1}}
+</style>
 </head>
 <body>
 <header><a href="index.html">← お金の計算ツール</a><span class="pr">このページには広告（PR）が含まれます</span></header>
@@ -19,9 +29,10 @@
 <p class="lead">毎月・毎年かかる支払いを書き出すと、1か月あたり・1年あたりの合計を計算します。「見直し後」の欄に、解約なら 0、プラン変更ならその金額を入れると、浮くお金がわかります。入力した数字はどこにも送信されません。</p>
 
 <div class="card">
-  <div class="grid" id="rows">
-    <span class="h">項目</span><span class="h">金額（円）</span><span class="h">支払い</span><span class="h">見直し後（円）</span>
-  </div>
+  <label>毎月・毎年の支払い<small>金額と払い方を直してください。解約・乗り換えを考えているものは「見直し後」に新しい金額を入れます（解約なら 0）</small></label>
+  <div id="rows"></div>
+  <label style="margin-top:16px">＋ 項目を追加（タップ）</label>
+  <div class="chips" id="chips"></div>
   <div class="result" aria-live="polite">
     <div>今の固定費（1か月あたり）</div>
     <div class="big" id="now">―</div>
@@ -48,29 +59,37 @@
 <nav class="related"><strong>ほかの無料ツール：</strong><a href="furusato.html">ふるさと納税の上限</a> ／ <a href="iryohi.html">医療費控除</a> ／ <a href="fukugyo.html">副業の20万円ルール</a> ／ <a href="gensen.html">源泉徴収税額</a> ／ <a href="yachin.html">手取りから家賃の目安</a> ／ <a href="shoki.html">一人暮らしの初期費用</a> ／ <a href="hiwari.html">家賃の日割り</a> ／ <a href="denki.html">電気代</a> ／ <a href="chokin.html">貯金シミュレーター</a> ／ <a href="yukyu.html">有給休暇の日数</a> ／ <a href="lot.html">FX ロット計算</a></nav>
 <footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。 ／ <a href="about.html">運営者情報・プライバシーポリシー</a></footer>
 <script>
-const items = [["家賃", 60000, 1], ["スマホ", 3000, 1], ["ネット回線", 4000, 1], ["動画サブスク", 1500, 1], ["音楽サブスク", 1080, 1],
-  ["生命保険・医療保険", 3000, 1], ["火災保険", 15000, 24], ["年会費（通販の会員など）", 5900, 12], ["", "", 1], ["", "", 1]];
-const rows = document.getElementById("rows");
-items.forEach(([n, a, iv], i) => {
-  rows.insertAdjacentHTML("beforeend",
-    `<input id="n${i}" value="${n}" placeholder="項目"><input id="a${i}" type="number" value="${a}" placeholder="0">` +
-    `<select id="i${i}"><option value="1"${iv === 1 ? " selected" : ""}>毎月</option><option value="12"${iv === 12 ? " selected" : ""}>毎年</option><option value="24"${iv === 24 ? " selected" : ""}>2年ごと</option></select>` +
-    `<input id="b${i}" type="number" placeholder="空欄＝そのまま">`);
-});
+const START = [["家賃", 60000, 1], ["スマホ", 3000, 1], ["ネット回線", 4000, 1], ["動画サブスク", 1500, 1], ["音楽サブスク", 1080, 1],
+  ["生命保険・医療保険", 3000, 1], ["火災保険", 15000, 24], ["年会費（通販の会員など）", 5900, 12]];
+const MORE = [["電気代", 6000, 1], ["ガス代", 4000, 1], ["水道代", 4000, 2], ["ジム", 7000, 1], ["駐車場", 10000, 1], ["自動車保険", 50000, 12], ["新聞・雑誌", 3000, 1], ["クラウド・アプリ", 400, 1], ["習い事", 8000, 1], ["その他", "", 1]];
+const IV = [[1, "毎月"], [2, "2か月ごと"], [12, "毎年"], [24, "2年ごと"]];
 const $ = id => document.getElementById(id);
 const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+function addItem([n, a, iv]) {
+  const d = document.createElement("div"); d.className = "item";
+  d.innerHTML = `<div class="top"><input class="n" value="${n}" placeholder="項目の名前" aria-label="項目"><button type="button" class="del" aria-label="消す">×</button></div>
+  <div class="sel"><label>金額（円）<input class="a" type="number" inputmode="numeric" min="0" value="${a}" placeholder="0"></label>
+  <label>払い方<select class="i">${IV.map(([v, t]) => `<option value="${v}"${v === iv ? " selected" : ""}>${t}</option>`).join("")}</select></label>
+  <label>見直し後（円）<input class="b" type="number" inputmode="numeric" min="0" placeholder="そのまま"></label></div>
+  <div class="save"></div>`;
+  d.querySelectorAll("input,select").forEach(e => e.addEventListener("input", calc));
+  d.querySelector(".del").addEventListener("click", () => { d.remove(); calc(); });
+  $("rows").appendChild(d); calc();
+}
 function calc() {
   let now = 0, after = 0;
-  items.forEach((_, i) => {
-    const iv = Number($("i" + i).value), a = Number($("a" + i).value) || 0;
-    const b = $("b" + i).value === "" ? a : (Number($("b" + i).value) || 0);
+  document.querySelectorAll("#rows .item").forEach(r => {
+    const iv = Number(r.querySelector(".i").value), a = Number(r.querySelector(".a").value) || 0;
+    const bv = r.querySelector(".b").value, b = bv === "" ? a : (Number(bv) || 0);
     now += a / iv; after += b / iv;
+    r.querySelector(".save").textContent = bv !== "" && a > b ? `1年で ${yen((a - b) / iv * 12)} 浮きます` : "";
   });
   $("now").textContent = yen(now); $("year").textContent = yen(now * 12);
   $("after").textContent = yen(after); $("saveM").textContent = yen(now - after); $("saveY").textContent = yen((now - after) * 12);
 }
-document.querySelectorAll("input,select").forEach(e => { e.addEventListener("input", calc); e.addEventListener("change", calc); });
-calc();
+$("chips").innerHTML = MORE.map((m, i) => `<button type="button" data-i="${i}">＋ ${m[0]}</button>`).join("");
+$("chips").addEventListener("click", e => { const b = e.target.closest("button"); if (b) addItem(MORE[+b.dataset.i]); });
+START.forEach(addItem);
 </script>
 </body>
 </html>
