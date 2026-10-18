@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>固定費の見直しシミュレーター｜毎月・毎年の支払いを書き出して節約額を計算（無料）</title>
+<meta name="description" content="家賃・スマホ・ネット・サブスク・保険・年会費などの固定費を入れるだけで、1か月あたり・1年あたりの合計と、見直したときに浮くお金を計算します。年払い・2年払いも月額に換算。登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/koteihi.html">
+<link rel="stylesheet" href="style.css">
+<style>:root{--accent:#1e5c4a;--accent-soft:#e3efe9}@media (prefers-color-scheme: dark){:root{--accent:#7fd1ae;--accent-soft:#1d3229}}
+.grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:6px;align-items:center}
+.grid input,.grid select{font-size:15px;padding:6px 8px}.grid .h{font-size:13px;color:var(--sub);font-weight:700}
+@media (max-width:520px){.grid{grid-template-columns:1fr 1fr}.grid .h:nth-child(n+3){display:none}}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a></header>
+<main>
+<h1>固定費の見直しシミュレーター</h1>
+<p class="lead">毎月・毎年かかる支払いを書き出すと、1か月あたり・1年あたりの合計を計算します。「見直し後」の欄に、解約なら 0、プラン変更ならその金額を入れると、浮くお金がわかります。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <div class="grid" id="rows">
+    <span class="h">項目</span><span class="h">金額（円）</span><span class="h">支払い</span><span class="h">見直し後（円）</span>
+  </div>
+  <div class="result" aria-live="polite">
+    <div>今の固定費（1か月あたり）</div>
+    <div class="big" id="now">―</div>
+    <dl>
+      <dt>1年あたり</dt><dd id="year">―</dd>
+      <dt>見直し後（1か月あたり）</dt><dd id="after">―</dd>
+      <dt>浮くお金（1か月）</dt><dd id="saveM">―</dd>
+      <dt>浮くお金（1年）</dt><dd id="saveY">―</dd>
+    </dl>
+  </div>
+  <p class="note">「毎年」「2年ごと」の支払いは、12か月・24か月で割って1か月あたりにしています。見直し後が空欄の項目は、そのまま続けるものとして計算します。</p>
+</div>
+
+<h2>見直す順番のおすすめ</h2>
+<p>1. 使っていないサブスク・年会費 → 2. スマホ代 → 3. ネット回線 → 4. 保険 → 5. 家賃。一度見直すと、毎月ずっと効くのが固定費の強みです。くわしくは<a href="https://note.com/fresh_snake1249/n/n7ee9acdb9021">一人暮らしの固定費、見直すならこの順番</a>にまとめています。</p>
+
+<a class="cta" href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe" rel="noopener">
+  <strong>毎月の予算と実績も管理するなら</strong><br>
+  固定費の見直しリスト・予算と実績の比較・初期費用の見積もりまで入った「一人暮らしの家計簿・予算シート」（Excel / Google スプレッドシート・500円）
+</a>
+</main>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。</footer>
+<script>
+const items = [["家賃", 60000, 1], ["スマホ", 3000, 1], ["ネット回線", 4000, 1], ["動画サブスク", 1500, 1], ["音楽サブスク", 1080, 1],
+  ["生命保険・医療保険", 3000, 1], ["火災保険", 15000, 24], ["年会費（通販の会員など）", 5900, 12], ["", "", 1], ["", "", 1]];
+const rows = document.getElementById("rows");
+items.forEach(([n, a, iv], i) => {
+  rows.insertAdjacentHTML("beforeend",
+    `<input id="n${i}" value="${n}" placeholder="項目"><input id="a${i}" type="number" value="${a}" placeholder="0">` +
+    `<select id="i${i}"><option value="1"${iv === 1 ? " selected" : ""}>毎月</option><option value="12"${iv === 12 ? " selected" : ""}>毎年</option><option value="24"${iv === 24 ? " selected" : ""}>2年ごと</option></select>` +
+    `<input id="b${i}" type="number" placeholder="空欄＝そのまま">`);
+});
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+function calc() {
+  let now = 0, after = 0;
+  items.forEach((_, i) => {
+    const iv = Number($("i" + i).value), a = Number($("a" + i).value) || 0;
+    const b = $("b" + i).value === "" ? a : (Number($("b" + i).value) || 0);
+    now += a / iv; after += b / iv;
+  });
+  $("now").textContent = yen(now); $("year").textContent = yen(now * 12);
+  $("after").textContent = yen(after); $("saveM").textContent = yen(now - after); $("saveY").textContent = yen((now - after) * 12);
+}
+document.querySelectorAll("input,select").forEach(e => { e.addEventListener("input", calc); e.addEventListener("change", calc); });
+calc();
+</script>
+</body>
+</html>
