@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>有給休暇の日数計算ツール｜入社日から今もらえる有給の日数がわかる（パート・アルバイト対応・無料）</title>
+<meta name="description" content="入社日と週の勤務日数から、有給休暇が何日もらえるか、次はいつ何日もらえるかを計算します。パート・アルバイトの比例付与にも対応。年5日の取得義務や2年の時効も確認できます。登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/yukyu.html">
+<link rel="stylesheet" href="style.css">
+<style>:root{--accent:#23395b;--accent-soft:#e6ebf5}@media (prefers-color-scheme: dark){:root{--accent:#9db4dd;--accent-soft:#232c3d}}
+table{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}th,td{text-align:center}th{background:var(--accent-soft)}
+.wrap{overflow-x:auto}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a></header>
+<main>
+<h1>有給休暇の日数計算ツール</h1>
+<p class="lead">入社日と働き方から、法律で決まっている有給休暇の日数を計算します。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <label for="join">入社日（雇い入れの日）</label>
+  <input id="join" type="date">
+  <label for="week">働き方</label>
+  <select id="week">
+    <option value="5">週5日以上、または週30時間以上</option>
+    <option value="4">週4日（30時間未満）</option>
+    <option value="3">週3日（30時間未満）</option>
+    <option value="2">週2日（30時間未満）</option>
+    <option value="1">週1日（30時間未満）</option>
+  </select>
+  <label for="base">計算の基準日</label>
+  <input id="base" type="date">
+
+  <div class="result" aria-live="polite">
+    <div>直近にもらえた有給の日数</div>
+    <div class="big" id="now">―</div>
+    <dl>
+      <dt>勤続</dt><dd id="len">―</dd>
+      <dt>次にもらえる日</dt><dd id="next">―</dd>
+      <dt>今年の取得義務</dt><dd id="duty">―</dd>
+    </dl>
+  </div>
+  <p class="note">出勤すべき日の8割以上出勤していることが条件です。会社が法律より多く付与している場合や、入社日に前倒しで付与している場合は、会社の決まりが優先されます。有給は、もらった日から2年で時効になります。</p>
+</div>
+
+<h2>有給休暇の日数の表</h2>
+<div class="wrap"><table>
+<thead><tr><th>働き方</th><th>6か月</th><th>1年6か月</th><th>2年6か月</th><th>3年6か月</th><th>4年6か月</th><th>5年6か月</th><th>6年6か月以上</th></tr></thead>
+<tbody id="tbl"></tbody>
+</table></div>
+<p><strong>年5日の取得義務：</strong>1年に10日以上の有給をもらう人は、そのうち5日を、もらった日から1年以内に取らせることが会社に義務づけられています。</p>
+<p><strong>パート・アルバイトでも有給はあります。</strong>週の勤務日数が少ない人は、上の表の日数（比例付与）になります。</p>
+<p class="note">このページの計算は、労働基準法の基本のルールにもとづく目安です。詳しくは、会社の就業規則や労働基準監督署でご確認ください。</p>
+
+<a class="cta" href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe" rel="noopener">
+  <strong>休みの日の予定と、毎月のお金をまとめて管理するなら</strong><br>
+  予算と実績を比べて、使いすぎを色で知らせる「一人暮らしの家計簿・予算シート」（Excel / Google スプレッドシート・500円）
+</a>
+<p class="note" style="margin-top:8px">💡 家計簿・副業の収支・請求書・ふるさと納税・医療費控除の5つをまとめた<a href="https://note.com/fresh_snake1249/n/n3c719a8a34ff">「お金の管理シート5点セット」（1,500円・1,000円お得）</a>もあります。</p>
+</main>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。</footer>
+<script>
+const T = { 5: [10, 11, 12, 14, 16, 18, 20], 4: [7, 8, 9, 10, 12, 13, 15], 3: [5, 6, 6, 8, 9, 10, 11], 2: [3, 4, 4, 5, 6, 6, 7], 1: [1, 2, 2, 2, 3, 3, 3] };
+const L = { 5: "週5日以上・週30時間以上", 4: "週4日", 3: "週3日", 2: "週2日", 1: "週1日" };
+const $ = id => document.getElementById(id);
+$("tbl").innerHTML = [5, 4, 3, 2, 1].map(k => `<tr><th>${L[k]}</th>${T[k].map(n => `<td>${n}日</td>`).join("")}</tr>`).join("");
+const iso = d => d.toLocaleDateString("sv-SE");
+const fmt = d => `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+const addM = (d, m) => { const r = new Date(d.getFullYear(), d.getMonth() + m, d.getDate()); if (r.getDate() !== d.getDate()) r.setDate(0); return r; };
+const today = new Date(); $("base").value = iso(today);
+$("join").value = iso(new Date(today.getFullYear() - 1, today.getMonth(), 1));
+function calc() {
+  const jv = $("join").value, bv = $("base").value;
+  if (!jv || !bv) return;
+  const j = new Date(jv + "T00:00"), b = new Date(bv + "T00:00"), w = $("week").value;
+  // 付与日：入社6か月後、その後1年ごと
+  let k = -1;
+  while (addM(j, 6 + 12 * (k + 1)) <= b) k++;
+  const months = (b.getFullYear() - j.getFullYear()) * 12 + b.getMonth() - j.getMonth() - (b.getDate() < j.getDate() ? 1 : 0);
+  $("len").textContent = months < 0 ? "―" : `${Math.floor(months / 12)}年${months % 12}か月`;
+  const nextDate = addM(j, 6 + 12 * (k + 1)), nextN = T[w][Math.min(k + 1, 6)];
+  $("next").textContent = `${fmt(nextDate)}に ${nextN}日`;
+  if (k < 0) { $("now").textContent = "まだありません"; $("duty").textContent = "―"; return; }
+  const n = T[w][Math.min(k, 6)];
+  $("now").textContent = `${n} 日（${fmt(addM(j, 6 + 12 * k))}にもらえた分）`;
+  $("duty").textContent = n >= 10 ? `この中から5日以上を ${fmt(new Date(addM(j, 18 + 12 * k).getTime() - 864e5))}までに取る必要あり（会社の義務）` : "なし（10日未満のため）";
+}
+document.querySelectorAll("input,select").forEach(e => e.addEventListener("input", calc));
+calc();
+</script>
+</body>
+</html>

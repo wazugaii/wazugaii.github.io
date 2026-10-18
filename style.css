@@ -46,7 +46,7 @@ p.lead { color: var(--sub); margin-top: 0; }
 }
 label { display: block; font-weight: 700; margin: 14px 0 4px; }
 label small { display: block; font-weight: 400; color: var(--sub); font-size: 13px; }
-input[type=number], select {
+input[type=number], input[type=date], select {
   width: 100%;
   font-size: 18px;
   padding: 10px 12px;
@@ -80,3 +80,4 @@ th { background: var(--accent-soft); }
 .tools a { display: block; padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; color: var(--text); text-decoration: none; }
 .tools a span { display: block; color: var(--sub); font-size: 14px; }
 footer { color: var(--sub); font-size: 13px; padding: 40px 16px; }
+button.add { font-size: 15px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--text); cursor: pointer; }

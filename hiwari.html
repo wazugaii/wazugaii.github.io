@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>家賃の日割り計算ツール｜入居日・退去日から日割り家賃を計算（無料）</title>
+<meta name="description" content="家賃・管理費と入居日（または退去日）を入れると、日割りの家賃を計算します。「その月の日数で割る」「30日で割る」の両方の計算に対応。引っ越しの初期費用の確認に。登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/hiwari.html">
+<link rel="stylesheet" href="style.css">
+<style>:root{--accent:#1e5c4a;--accent-soft:#e3efe9}@media (prefers-color-scheme: dark){:root{--accent:#7fd1ae;--accent-soft:#1d3229}}
+.yn{display:flex;gap:12px;margin-top:4px;flex-wrap:wrap}.yn label{font-weight:400;margin:0;display:flex;gap:4px;align-items:center}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a></header>
+<main>
+<h1>家賃の日割り計算ツール</h1>
+<p class="lead">入居する月（または退去する月）の家賃を、日割りで計算します。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <label for="rent">家賃（円/月）</label>
+  <input id="rent" type="number" inputmode="numeric" min="0" step="1000" value="60000">
+  <label for="fee">管理費・共益費（円/月）</label>
+  <input id="fee" type="number" inputmode="numeric" min="0" step="500" value="3000">
+  <label>どちらを計算しますか</label>
+  <div class="yn">
+    <label><input type="radio" name="kind" value="in" checked> 入居する月</label>
+    <label><input type="radio" name="kind" value="out"> 退去する月</label>
+  </div>
+  <label for="date" id="dateLabel">入居日（家賃が発生する日）</label>
+  <input id="date" type="date">
+
+  <div class="result" aria-live="polite">
+    <div>日割りの家賃（管理費込み）</div>
+    <div class="big" id="r1">―</div>
+    <dl>
+      <dt id="daysLabel">日数</dt><dd id="days">―</dd>
+      <dt>その月の日数で割った場合</dt><dd id="a">―</dd>
+      <dt>30日で割った場合</dt><dd id="b">―</dd>
+    </dl>
+  </div>
+  <p class="note">日割りの計算方法（その月の日数で割るか、30日で割るか）や、1円未満の扱いは、契約や管理会社によって違います。契約書をご確認ください。上の大きな数字は「その月の日数で割った場合」です。</p>
+</div>
+
+<h2>入居の月の初期費用に注意</h2>
+<p>月の後半に入居すると、<strong>日割り家賃に加えて翌月分の家賃も、契約のときにまとめて払う</strong>ことがよくあります。初期費用が思ったより高くなるのはこのためです。</p>
+<p>敷金・礼金・仲介手数料・引っ越し代まで含めた合計は、<a href="shoki.html">一人暮らしの初期費用シミュレーター</a>で計算できます。家賃の目安は<a href="yachin.html">手取りから家賃の目安を計算</a>でどうぞ。</p>
+
+<a class="cta" href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe" rel="noopener">
+  <strong>引っ越しのお金と、毎月の予算をまとめて管理するなら</strong><br>
+  初期費用の見積もりシートも入った「一人暮らしの家計簿・予算シート」（Excel / Google スプレッドシート・500円）
+</a>
+<p class="note" style="margin-top:8px">💡 家計簿・副業の収支・請求書・ふるさと納税・医療費控除の5つをまとめた<a href="https://note.com/fresh_snake1249/n/n3c719a8a34ff">「お金の管理シート5点セット」（1,500円・1,000円お得）</a>もあります。</p>
+</main>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。</footer>
+<script>
+const $ = id => document.getElementById(id);
+const yen = n => Math.floor(n).toLocaleString("ja-JP") + " 円";
+const t = new Date(); $("date").value = new Date(t.getFullYear(), t.getMonth() + 1, 15).toLocaleDateString("sv-SE");
+function calc() {
+  const m = (Number($("rent").value) || 0) + (Number($("fee").value) || 0);
+  const kind = document.querySelector("input[name=kind]:checked").value;
+  $("dateLabel").textContent = kind === "in" ? "入居日（家賃が発生する日）" : "退去日（解約日）";
+  $("daysLabel").textContent = kind === "in" ? "入居日から月末までの日数" : "月初めから退去日までの日数";
+  const v = $("date").value;
+  if (!v) { ["r1", "days", "a", "b"].forEach(i => $(i).textContent = "―"); return; }
+  const [y, mo, d] = v.split("-").map(Number);
+  const dim = new Date(y, mo, 0).getDate();
+  const n = kind === "in" ? dim - d + 1 : d;
+  const a = m * n / dim, b = m * Math.min(n, 30) / 30;
+  $("r1").textContent = yen(a); $("days").textContent = `${n} 日（${mo}月は${dim}日まで）`;
+  $("a").textContent = yen(a); $("b").textContent = yen(b);
+}
+document.querySelectorAll("input").forEach(e => e.addEventListener("input", calc));
+calc();
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>電気代の計算ツール｜家電の消費電力(W)から1時間・1か月の電気代を計算（無料）</title>
+<meta name="description" content="エアコン・こたつ・電気ストーブ・ドライヤーなど、家電の消費電力（W）と使う時間から、1時間・1日・1か月の電気代を計算します。複数の家電の合計も出せます。登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/denki.html">
+<link rel="stylesheet" href="style.css">
+<style>:root{--accent:#8a5a12;--accent-soft:#f6eddd}@media (prefers-color-scheme: dark){:root{--accent:#e8b96a;--accent-soft:#33291a}}
+.row{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr auto;gap:6px;align-items:end;margin-top:8px}
+.row input,.row select{margin:0}.row .cost{font-weight:700;text-align:right;white-space:nowrap;padding-bottom:10px}
+.hd{font-size:12px;color:var(--sub)}
+@media (max-width:560px){.row{grid-template-columns:1fr 1fr 1fr}.row .nm{grid-column:1/-1}.row .cost{grid-column:1/-1;text-align:left;padding:0}}
+button.add{margin-top:10px}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a></header>
+<main>
+<h1>電気代の計算ツール</h1>
+<p class="lead">家電の消費電力（W）と使う時間から、電気代の目安を計算します。複数の家電を入れると、1か月の合計も出せます。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <label for="price">電気の単価（円/kWh）</label>
+  <input id="price" type="number" inputmode="decimal" min="0" step="0.1" value="31">
+  <p class="note">31円は、家電のカタログなどで使われる目安の単価です。正確に知りたいときは、電気料金の明細の「請求額 ÷ 使用量（kWh）」で出せます。</p>
+  <label for="days">1か月に使う日数</label>
+  <input id="days" type="number" inputmode="numeric" min="1" max="31" step="1" value="30">
+
+  <h2 style="margin-bottom:0">家電</h2>
+  <div class="row hd"><span class="nm">家電（選ぶと目安の W が入ります）</span><span>消費電力（W）</span><span>1日の時間</span><span>台数</span><span></span></div>
+  <div id="rows"></div>
+  <button class="add" type="button" id="add">＋ 家電を追加</button>
+
+  <div class="result" aria-live="polite">
+    <div>1か月の電気代（合計）</div>
+    <div class="big" id="month">―</div>
+    <dl><dt>1日あたり</dt><dd id="day">―</dd><dt>1年あたり（同じ使い方で）</dt><dd id="year">―</dd></dl>
+  </div>
+  <p class="note">電気代 ＝ 消費電力（W）÷ 1000 × 使う時間 × 単価。エアコンや冷蔵庫は、温度や季節で消費電力が大きく変わるので、あくまで目安です。</p>
+</div>
+
+<h2>家電ごとの消費電力の目安</h2>
+<p>本体の裏や取扱説明書に書いてある「消費電力」を入れると、より正確になります。エアコンは、部屋が暖まった（冷えた）あとは消費電力が下がるので、ここでは平均的な値を入れています。</p>
+<p><strong>冬の電気代を下げるには</strong>、部屋全体を暖めるエアコンより、こたつや電気毛布など体の近くを暖めるものを組み合わせると下がりやすくなります。上の表で比べてみてください。</p>
+<p><strong>毎月の固定費を見直すなら</strong>、<a href="koteihi.html">固定費の見直しシミュレーター</a>で、電気・スマホ・サブスクなどをまとめて計算できます。</p>
+
+<a class="cta" href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe" rel="noopener">
+  <strong>光熱費を含めた毎月のお金を管理するなら</strong><br>
+  予算と実績を比べて、使いすぎを色で知らせる「一人暮らしの家計簿・予算シート」（Excel / Google スプレッドシート・500円）
+</a>
+<p class="note" style="margin-top:8px">💡 家計簿・副業の収支・請求書・ふるさと納税・医療費控除の5つをまとめた<a href="https://note.com/fresh_snake1249/n/n3c719a8a34ff">「お金の管理シート5点セット」（1,500円・1,000円お得）</a>もあります。</p>
+</main>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。</footer>
+<script>
+const P = [["エアコン（暖房・平均）", 600], ["エアコン（冷房・平均）", 400], ["こたつ（中）", 200], ["電気ストーブ", 800], ["セラミックファンヒーター", 1200], ["オイルヒーター", 1200], ["ホットカーペット（2畳・中）", 400], ["電気毛布", 50], ["ドライヤー", 1200], ["電子レンジ", 1000], ["炊飯器（保温）", 20], ["冷蔵庫（平均）", 40], ["テレビ（40型前後）", 100], ["パソコン（ノート）", 40], ["パソコン（デスクトップ）", 150], ["洗濯乾燥機（乾燥）", 1000], ["照明（LED）", 30], ["その他（自分で入力）", 0]];
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+function addRow(i = 0, h = 4) {
+  const d = document.createElement("div"); d.className = "row";
+  d.innerHTML = `<select class="nm" aria-label="家電">${P.map((p, k) => `<option value="${k}">${p[0]}</option>`).join("")}</select>
+  <input class="w" type="number" inputmode="numeric" min="0" step="10" aria-label="消費電力（W）">
+  <input class="h" type="number" inputmode="decimal" min="0" max="24" step="0.5" aria-label="1日の時間" value="${h}">
+  <input class="n" type="number" inputmode="numeric" min="1" step="1" aria-label="台数" value="1">
+  <span class="cost">―</span>`;
+  const sel = d.querySelector("select"); sel.value = i; d.querySelector(".w").value = P[i][1];
+  sel.addEventListener("change", () => { d.querySelector(".w").value = P[sel.value][1]; calc(); });
+  d.querySelectorAll("input").forEach(e => e.addEventListener("input", calc));
+  $("rows").appendChild(d); calc();
+}
+function calc() {
+  const price = Number($("price").value) || 0, days = Number($("days").value) || 0;
+  let perDay = 0;
+  document.querySelectorAll("#rows .row").forEach(r => {
+    const v = c => Number(r.querySelector(c).value) || 0;
+    const d = v(".w") / 1000 * v(".h") * v(".n") * price;
+    perDay += d;
+    r.querySelector(".cost").textContent = `1か月 ${yen(d * days)}（1時間 ${(v(".w") / 1000 * v(".n") * price).toFixed(1)}円）`;
+  });
+  $("day").textContent = yen(perDay); $("month").textContent = yen(perDay * days); $("year").textContent = yen(perDay * days * 12);
+}
+$("add").addEventListener("click", () => addRow(P.length - 1, 1));
+$("price").addEventListener("input", calc); $("days").addEventListener("input", calc);
+addRow(0, 8); addRow(2, 4);
+</script>
+</body>
+</html>
