@@ -1,0 +1,56 @@
+<p>このアカウントでは、一人暮らし・副業・フリーランスの「お金の管理」を、Excel・Google スプレッドシートと無料の計算ツールでラクにする方法を書いています。</p>
+<p>どこから読めばいいか分からない方のために、全部をここにまとめました。</p>
+<h2>無料の計算ツール（登録不要）</h2>
+<p>入力した数字はどこにも送信されません。</p>
+<ul>
+<li><a href="https://wazugaii.github.io/furusato.html">ふるさと納税の上限の目安</a></li>
+<li><a href="https://wazugaii.github.io/iryohi.html">医療費控除の計算</a></li>
+<li><a href="https://wazugaii.github.io/fukugyo.html">副業の20万円ルール・確定申告の判定</a></li>
+<li><a href="https://wazugaii.github.io/gensen.html">源泉徴収税額の計算</a></li>
+<li><a href="https://wazugaii.github.io/shoki.html">一人暮らしの初期費用</a></li>
+<li><a href="https://wazugaii.github.io/yachin.html">家賃の目安（手取りから）</a></li>
+<li><a href="https://wazugaii.github.io/koteihi.html">固定費の見直し</a></li>
+<li><a href="https://wazugaii.github.io/chokin.html">貯金シミュレーター</a></li>
+<li><a href="https://wazugaii.github.io/">ツールの一覧</a></li>
+</ul>
+<h2>シート（Excel / Google スプレッドシート）</h2>
+<ul>
+<li><a href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe">一人暮らしの家計簿・予算シート</a>（500円）… 予算と実績を比べたい、固定費を見直したい</li>
+<li><a href="https://note.com/fresh_snake1249/n/n2c0c4ef3b3d8">副業の収支・確定申告シート</a>（500円）… 副業の所得を出したい、20万円を超えるか知りたい</li>
+<li><a href="https://note.com/fresh_snake1249/n/nc973c1f49384">請求書・見積書・納品書テンプレート</a>（500円）… インボイス・源泉徴収を自動計算したい</li>
+<li><a href="https://note.com/fresh_snake1249/n/naddcc3749ec0">ふるさと納税の上限目安・寄附管理シート</a>（500円）… 上限と寄附先・ワンストップの提出を管理したい</li>
+<li><a href="https://note.com/fresh_snake1249/n/nd7ac35b4f2f6">医療費控除の集計シート</a>（500円）… 家族の医療費を集計して明細書に写したい</li>
+<li><strong><a href="https://note.com/fresh_snake1249/n/n3c719a8a34ff">5点セット</a></strong>（<strong>1,500円</strong>）… <strong>上の5つ全部（1,000円お得）</strong></li>
+</ul>
+<h2>季節ごとに読んでほしい記事</h2>
+<p><strong>10〜12月（年末）</strong></p>
+<ul>
+<li><a href="https://note.com/fresh_snake1249/n/n951a5050a453">ふるさと納税の上限、自分で計算する方法</a></li>
+<li><a href="https://note.com/fresh_snake1249/n/n97abe2eef8aa">ワンストップ特例の出し忘れを防ぐ</a></li>
+<li><a href="https://note.com/fresh_snake1249/n/n3ea0b0c09f20">年末調整と副業</a></li>
+<li><a href="https://note.com/fresh_snake1249/n/nc073738a1241">確定申告の準備、年内にやっておくこと</a></li>
+</ul>
+<p><strong>1〜3月（確定申告）</strong></p>
+<ul>
+<li><a href="https://note.com/fresh_snake1249/n/n459f3fc5d4c6">医療費控除、10万円いかなくても使えることがある</a></li>
+<li><a href="https://note.com/fresh_snake1249/n/ne599efbee84d">副業の20万円ルール</a></li>
+<li><a href="https://note.com/fresh_snake1249/n/n992cb20d14f1">家事按分のやり方</a></li>
+</ul>
+<p><strong>副業・フリーランス</strong></p>
+<ul>
+<li><a href="https://note.com/fresh_snake1249/n/nbaf3134abd21">開業届は出すべき？</a></li>
+<li><a href="https://note.com/fresh_snake1249/n/nef92ce1541cc">副業の住民税と普通徴収</a></li>
+<li><a href="https://note.com/fresh_snake1249/n/n6b94cf81e0d5">フリーランスの請求書と源泉徴収</a></li>
+</ul>
+<p><strong>一人暮らし</strong></p>
+<ul>
+<li><a href="https://note.com/fresh_snake1249/n/n0c0d3674bda7">一人暮らし、手取りいくらあればできる？</a></li>
+<li><a href="https://note.com/fresh_snake1249/n/n7ee9acdb9021">固定費の見直し</a></li>
+</ul>
+<h2>FX（MT5）のツール</h2>
+<ul>
+<li><a href="https://note.com/fresh_snake1249/n/nf74a3ac41006">ロットの計算ミスで161倍の注文になりかけた話</a></li>
+<li><a href="https://note.com/fresh_snake1249/n/n48f630c5a9d0">ゴトー日の話</a></li>
+<li><a href="https://wazugaii.github.io/lot.html">MT5 のロット計算ツール（無料）</a></li>
+</ul>
+<p>新しい記事やツールを作ったら、この目次に追加していきます。フォローしておくと更新が届きます。</p>
