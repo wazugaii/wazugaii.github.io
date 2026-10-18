@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /img/note/
 Sitemap: https://wazugaii.github.io/sitemap.xml
