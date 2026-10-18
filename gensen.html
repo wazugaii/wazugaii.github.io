@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>源泉徴収税額の計算ツール｜報酬の10.21%・手取り額・請求額を自動計算（フリーランス向け・無料）</title>
+<meta name="description" content="フリーランス・個人事業主の報酬にかかる源泉徴収税額（10.21%、100万円超は20.42%）と、消費税・手取り額・請求額を自動計算します。税込・税抜の両方に対応。登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/gensen.html">
+<link rel="stylesheet" href="style.css">
+<style>:root{--accent:#23395b;--accent-soft:#e6ebf5}@media (prefers-color-scheme: dark){:root{--accent:#9db4dd;--accent-soft:#232c3d}}
+.yn{display:flex;gap:12px;margin-top:4px;flex-wrap:wrap}.yn label{font-weight:400;margin:0;display:flex;gap:4px;align-items:center}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a></header>
+<main>
+<h1>源泉徴収税額の計算ツール</h1>
+<p class="lead">デザイン料・原稿料・講演料など、個人への報酬から差し引く源泉徴収税額と、請求額・実際に振り込まれる額を計算します。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <label for="amt">報酬の金額（円）</label>
+  <input id="amt" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：100000">
+  <label>入力した金額は</label>
+  <div class="yn">
+    <label><input type="radio" name="kind" value="ex" checked> 税抜（消費税を別に請求する）</label>
+    <label><input type="radio" name="kind" value="in"> 税込（消費税込みの金額）</label>
+    <label><input type="radio" name="kind" value="none"> 消費税なし（免税事業者で消費税を請求しない）</label>
+  </div>
+
+  <div class="result" aria-live="polite">
+    <div>源泉徴収税額</div>
+    <div class="big" id="tax">― 円</div>
+    <dl>
+      <dt>報酬（税抜）</dt><dd id="base">―</dd>
+      <dt>消費税（10%）</dt><dd id="ctax">―</dd>
+      <dt>請求額（税込）</dt><dd id="bill">―</dd>
+      <dt>実際に振り込まれる額</dt><dd id="net">―</dd>
+    </dl>
+  </div>
+  <p class="note">源泉徴収税額 ＝ 報酬（税抜）× 10.21%（100万円を超える部分は 20.42%）。1円未満は切り捨て。請求書で報酬と消費税を分けて書いている場合は、税抜の金額に対して計算できます。税込の金額で書いている場合は、税込の金額に対して計算するのが原則です。</p>
+</div>
+
+<a class="cta" href="https://note.com/fresh_snake1249/n/nc973c1f49384" rel="noopener">
+  <strong>請求書に自動で入れるなら</strong><br>
+  源泉徴収税額・税率ごとの消費税・差引金額を自動計算する、インボイス対応の請求書・見積書・納品書テンプレート（Excel / Google スプレッドシート・500円）
+</a>
+<p class="note" style="margin-top:8px">💡 家計簿・副業の収支・請求書・ふるさと納税・医療費控除の5つをまとめた<a href="https://note.com/fresh_snake1249/n/n3c719a8a34ff">「お金の管理シート5点セット」（1,500円・1,000円お得）</a>もあります。</p>
+
+<h2>源泉徴収が必要な報酬の例</h2>
+<p>個人に支払う、原稿料・デザイン料・講演料・翻訳料・写真の撮影料・プログラムの作成料などは、支払う側（会社など）に源泉徴収の義務があることがあります。対象かどうかは、国税庁の「源泉徴収のあらまし」などでご確認ください。</p>
+<p><strong>源泉徴収された税金は、確定申告で精算されます。</strong>1年の所得や控除によっては、払いすぎた分が戻ってくることがあります。</p>
+<p class="note">このページの計算は目安です。個別の判断は、国税庁のサイトや税務署でご確認ください。</p>
+</main>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。</footer>
+<script>
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+function gensen(x) { return x <= 1000000 ? Math.floor(x * 0.1021) : Math.floor((x - 1000000) * 0.2042) + 102100; }
+function calc() {
+  const a = Number($("amt").value) || 0;
+  if (!a) { $("tax").textContent = "― 円"; ["base", "ctax", "bill", "net"].forEach(i => $(i).textContent = "―"); return; }
+  const kind = document.querySelector("input[name=kind]:checked").value;
+  let base, ctax, taxBase;
+  if (kind === "ex") { base = a; ctax = Math.floor(a * 0.1); taxBase = base; }
+  else if (kind === "in") { base = Math.round(a / 1.1); ctax = a - base; taxBase = a; }
+  else { base = a; ctax = 0; taxBase = a; }
+  const t = gensen(taxBase);
+  $("tax").textContent = yen(t); $("base").textContent = yen(base); $("ctax").textContent = yen(ctax);
+  $("bill").textContent = yen(base + ctax); $("net").textContent = yen(base + ctax - t);
+}
+document.querySelectorAll("input").forEach(e => e.addEventListener("input", calc));
+</script>
+</body>
+</html>
