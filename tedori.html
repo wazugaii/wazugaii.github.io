@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手取り計算ツール｜年収から手取り（年・月）がわかる・税金と社会保険料の内訳つき（無料）</title>
+<meta name="description" content="年収（額面）と家族構成を入れると、手取りの年額・月額の目安と、所得税・住民税・社会保険料の内訳を計算します。2025年からの基礎控除の引き上げにも対応。会社員向け・登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/tedori.html">
+<link rel="stylesheet" href="style.css">
+<style>details.opt{margin-top:14px}details.opt summary{cursor:pointer;color:var(--sub);font-size:14px}
+.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:12px 0 4px;background:var(--line)}
+.bar span{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--sub)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a><span class="pr">このページには広告（PR）が含まれます</span></header>
+<main>
+<h1>手取り計算ツール</h1>
+<p class="lead">年収（額面）と家族構成を選ぶと、手取りの目安と、税金・社会保険料の内訳がわかります。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <label for="salary">年収（額面・万円）<small>ボーナスを含む、税金などが引かれる前の金額。源泉徴収票の「支払金額」</small></label>
+  <input id="salary" type="number" inputmode="numeric" min="0" step="10" value="400">
+  <label for="spouse">配偶者</label>
+  <select id="spouse"><option value="0">いない・共働き（扶養していない）</option><option value="1">扶養している（配偶者の年収123万円以下）</option></select>
+  <label for="ippan">扶養している家族（16〜18歳・23歳以上）</label>
+  <select id="ippan"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+  <label for="tokutei">扶養している家族（19〜22歳）</label>
+  <select id="tokutei"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+  <label for="bonus">ボーナスの回数（1年）<small>月の手取りを出すのに使います</small></label>
+  <select id="bonus"><option value="0">なし（12か月で割る）</option><option value="2" selected>年2回（月給の2か月分ずつとして計算）</option></select>
+  <details class="opt"><summary>社会保険料を自分で入れる（わかる人だけ）</summary>
+    <label for="shaho">社会保険料（1年分・円）<small>入れなければ年収の15%として計算します</small></label>
+    <input id="shaho" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：600000">
+  </details>
+
+  <div class="result" aria-live="polite">
+    <div>手取りの目安（1年）</div>
+    <div class="big" id="year">―</div>
+    <dl>
+      <dt>毎月の手取り（月給の分）</dt><dd id="month">―</dd>
+      <dt id="bonusLabel">ボーナス1回の手取り</dt><dd id="bonusNet">―</dd>
+      <dt>社会保険料</dt><dd id="sh">―</dd>
+      <dt>所得税</dt><dd id="it">―</dd>
+      <dt>住民税</dt><dd id="rt">―</dd>
+      <dt>手取りの割合</dt><dd id="ratio">―</dd>
+    </dl>
+    <div class="bar" aria-hidden="true"><span id="b1" style="background:var(--accent)"></span><span id="b2" style="background:#8a94a3"></span><span id="b3" style="background:#e8892f"></span><span id="b4" style="background:#c0504d"></span></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>手取り</span><span><i style="background:#8a94a3"></i>社会保険料</span><span><i style="background:#e8892f"></i>所得税</span><span><i style="background:#c0504d"></i>住民税</span></div>
+  </div>
+  <p class="note">社会保険料は年収の約15%（健康保険・厚生年金・雇用保険の合計の目安）として計算しています。住民税は本来「前の年の収入」で決まるので、去年と年収が同じ場合の目安です。2025年分からの基礎控除の引き上げ（所得に応じて58万〜95万円）と、給与所得控除の最低額65万円に対応しています。</p>
+</div>
+
+<h2>手取りがわかったら</h2>
+<p>手取りの月額から、<a href="yachin.html">無理のない家賃の目安</a>や、<a href="chokin.html">毎月の貯金額</a>を計算できます。ふるさと納税をするなら、<a href="furusato.html">上限の目安</a>も同じ年収で計算できます。</p>
+
+<a class="cta" href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe" rel="noopener">
+  <strong>手取りの範囲で、毎月の予算を決めるなら</strong><br>
+  予算と実績を比べて、使いすぎを色で知らせる「一人暮らしの家計簿・予算シート」（Excel / Google スプレッドシート・500円）
+</a>
+<p class="note" style="margin-top:8px">💡 家計簿・副業の収支・請求書・ふるさと納税・医療費控除の5つをまとめた<a href="https://note.com/fresh_snake1249/n/n3c719a8a34ff">「お金の管理シート5点セット」（1,500円・1,000円お得）</a>もあります。</p>
+
+<h2>手取りの計算のしかた</h2>
+<p><strong>手取り ＝ 年収 − 社会保険料 − 所得税 − 住民税</strong></p>
+<p>所得税は「年収 − 給与所得控除 − 社会保険料 − 基礎控除など」に税率をかけて計算します。住民税は、ほぼ一律で課税所得の10%と、均等割（5,000円前後）です。</p>
+<p>副業の収入がある人は、その分の税金も増えます。<a href="fukugyo.html">副業の20万円ルール</a>で、確定申告が必要かを確認できます。</p>
+<p class="note">このページの計算は目安です。実際の手取りは、お住まいの地域の住民税・加入している健康保険・各種控除などで変わります。</p>
+</main>
+<nav class="related"><strong>ほかの無料ツール：</strong><a href="furusato.html">ふるさと納税の上限</a> ／ <a href="iryohi.html">医療費控除</a> ／ <a href="fukugyo.html">副業の20万円ルール</a> ／ <a href="gensen.html">源泉徴収税額</a> ／ <a href="yachin.html">手取りから家賃の目安</a> ／ <a href="shoki.html">一人暮らしの初期費用</a> ／ <a href="hiwari.html">家賃の日割り</a> ／ <a href="koteihi.html">固定費の見直し</a> ／ <a href="denki.html">電気代</a> ／ <a href="chokin.html">貯金シミュレーター</a> ／ <a href="yukyu.html">有給休暇の日数</a> ／ <a href="lot.html">FX ロット計算</a></nav>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。 ／ <a href="about.html">運営者情報・プライバシーポリシー</a></footer>
+<script src="tax.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+function calc() {
+  const salary = Number($("salary").value) * 10000;
+  if (!(salary > 0)) { ["year", "month", "bonusNet", "sh", "it", "rt", "ratio"].forEach(i => $(i).textContent = "―"); return; }
+  const t = TAX.tedori({ salary, spouse: $("spouse").value === "1", ippan: +$("ippan").value, tokutei: +$("tokutei").value, shaho: $("shaho").value });
+  const months = $("bonus").value === "2" ? 16 : 12;
+  $("year").textContent = yen(t.tedori);
+  $("month").textContent = yen(t.tedori / months);
+  $("bonusLabel").hidden = $("bonusNet").hidden = months === 12;
+  $("bonusNet").textContent = yen(t.tedori / months * 2);
+  $("sh").textContent = yen(t.shaho); $("it").textContent = yen(t.shotokuzei); $("rt").textContent = yen(t.juminzei);
+  $("ratio").textContent = Math.round(t.tedori / salary * 1000) / 10 + "%";
+  [[t.tedori, "b1"], [t.shaho, "b2"], [t.shotokuzei, "b3"], [t.juminzei, "b4"]].forEach(([v, id]) => $(id).style.width = (v / salary * 100) + "%");
+}
+document.querySelectorAll("input,select").forEach(e => e.addEventListener("input", calc));
+calc();
+</script>
+</body>
+</html>

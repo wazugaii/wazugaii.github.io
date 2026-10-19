@@ -61,5 +61,18 @@ const TAX = (() => {
     const shotokuwari = Math.max(0, Math.floor(kazeiJ * 0.1 - (kazeiJ > 0 ? chosei : 0)));
     return { kyuyoShotoku: g, shaho: sh, kazeiShotoku: kazeiS, kazeiJumin: kazeiJ, shotokuwari, rate: rateOf(kazeiS) };
   }
-  return { estimate, rateOf, kyuyoShotoku };
+  // 所得税（復興特別所得税を含む）。速算表
+  function shotokuzei(k) {
+    const T = [[1949000, 0.05, 0], [3299000, 0.10, 97500], [6949000, 0.20, 427500], [8999000, 0.23, 636000], [17999000, 0.33, 1536000], [39999000, 0.40, 2796000], [Infinity, 0.45, 4796000]];
+    const [, r, d] = T.find(t => k <= t[0]);
+    return Math.max(0, Math.floor((k * r - d) * 1.021 / 100) * 100);
+  }
+  // 年収から手取りの目安
+  function tedori(o) {
+    const e = estimate(o);
+    const it = shotokuzei(e.kazeiShotoku);
+    const rt = e.kazeiJumin > 0 ? e.shotokuwari + 5000 : 0; // 均等割（森林環境税を含む）5,000円
+    return { ...e, shotokuzei: it, juminzei: rt, tedori: o.salary - e.shaho - it - rt };
+  }
+  return { estimate, rateOf, kyuyoShotoku, shotokuzei, tedori };
 })();
