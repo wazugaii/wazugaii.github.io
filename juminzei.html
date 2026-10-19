@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>住民税の計算ツール｜年収から住民税（年額・毎月の天引き額）がわかる（無料）</title>
+<meta name="description" content="年収（額面）と家族構成を選ぶと、住民税の年額と、毎月の給料から引かれる額の目安を計算します。所得割・均等割の内訳つき。副業がある人の目安にも。会社員向け・登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/juminzei.html">
+<link rel="stylesheet" href="style.css">
+<style>details.opt{margin-top:14px}details.opt summary{cursor:pointer;color:var(--sub);font-size:14px}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a><span class="pr">このページには広告（PR）が含まれます</span></header>
+<main>
+<h1>住民税の計算ツール</h1>
+<p class="lead">年収と家族構成を選ぶと、住民税の年額と、毎月の給料から引かれる額の目安がわかります。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <label for="salary">年収（額面・万円）<small>住民税は「前の年の収入」で決まります。去年の源泉徴収票の「支払金額」を入れると、今年の住民税の目安になります</small></label>
+  <input id="salary" type="number" inputmode="numeric" min="0" step="10" value="400">
+  <label for="side">副業の所得（収入 − 経費・万円・任意）</label>
+  <input id="side" type="number" inputmode="numeric" min="0" step="1" value="0">
+  <label for="spouse">配偶者</label>
+  <select id="spouse"><option value="0">いない・共働き（扶養していない）</option><option value="1">扶養している（配偶者の年収136万円以下）</option></select>
+  <label for="ippan">扶養している家族（16〜18歳・23歳以上）</label>
+  <select id="ippan"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+  <label for="tokutei">扶養している家族（19〜22歳）</label>
+  <select id="tokutei"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+  <details class="opt"><summary>社会保険料を自分で入れる（わかる人だけ）</summary>
+    <label for="shaho">社会保険料（1年分・円）<small>入れなければ年収の15%として計算します</small></label>
+    <input id="shaho" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：600000">
+  </details>
+
+  <div class="result" aria-live="polite">
+    <div>住民税の目安（1年）</div>
+    <div class="big" id="year">―</div>
+    <dl>
+      <dt>毎月の給料から引かれる額</dt><dd id="month">―</dd>
+      <dt>所得割（課税所得の約10%）</dt><dd id="wari">―</dd>
+      <dt>均等割（森林環境税を含む）</dt><dd id="kinto">―</dd>
+      <dt id="sideLabel">うち、副業の分</dt><dd id="sideTax">―</dd>
+    </dl>
+  </div>
+  <p class="note">会社員の住民税は、6月から翌年5月までの12回に分けて給料から引かれます（特別徴収）。均等割はお住まいの自治体で少し違い、ここでは5,000円で計算しています。収入が少ない人は住民税がかからない（非課税）こともあり、その基準も自治体で違います。社会保険料は年収の約15%として計算しています。</p>
+</div>
+
+<h2>住民税のしくみ</h2>
+<p><strong>住民税 ＝ 所得割（課税所得 × 約10%）＋ 均等割（5,000円前後）</strong></p>
+<p>住民税は、前の年（1〜12月）の所得をもとに計算され、6月から引かれ始めます。そのため、<strong>社会人2年目の6月から急に手取りが減る</strong>、<strong>退職した次の年も住民税の支払いが続く</strong>、ということが起こります。</p>
+<p>副業の所得がある人は、その分の住民税も増えます。副業の分を会社の給料から引かず、自分で払う「普通徴収」を選べる場合があります。くわしくは<a href="https://note.com/fresh_snake1249/n/nef92ce1541cc">副業の住民税、会社にバレない？「普通徴収」の選び方</a>にまとめています。</p>
+<p>手取り全体は<a href="tedori.html">手取り計算ツール</a>、副業の確定申告が必要かは<a href="fukugyo.html">副業の20万円ルール判定</a>で確認できます。</p>
+
+<a class="cta" href="https://note.com/fresh_snake1249/n/n2c0c4ef3b3d8" rel="noopener">
+  <strong>副業の収入と経費をまとめて管理するなら</strong><br>
+  1行ずつ書くだけで、月別の集計と「確定申告が必要か」の目安まで出る「副業の収支・確定申告シート」（Excel / Google スプレッドシート・500円）
+</a>
+<p class="note" style="margin-top:8px">💡 家計簿・副業の収支・請求書・ふるさと納税・医療費控除の5つをまとめた<a href="https://note.com/fresh_snake1249/n/n3c719a8a34ff">「お金の管理シート5点セット」（1,500円・1,000円お得）</a>もあります。</p>
+<p class="note">このページの計算は目安です。正確な金額は、毎年5〜6月に届く住民税の決定通知書や、お住まいの市区町村でご確認ください。</p>
+</main>
+<nav class="related"><strong>ほかの無料ツール：</strong><a href="tedori.html">年収から手取り</a> ／ <a href="furusato.html">ふるさと納税の上限</a> ／ <a href="iryohi.html">医療費控除</a> ／ <a href="fukugyo.html">副業の20万円ルール</a> ／ <a href="gensen.html">源泉徴収税額</a> ／ <a href="yachin.html">手取りから家賃の目安</a> ／ <a href="shoki.html">一人暮らしの初期費用</a> ／ <a href="hiwari.html">家賃の日割り</a> ／ <a href="koteihi.html">固定費の見直し</a> ／ <a href="denki.html">電気代</a> ／ <a href="chokin.html">貯金シミュレーター</a> ／ <a href="yukyu.html">有給休暇の日数</a> ／ <a href="lot.html">FX ロット計算</a></nav>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。 ／ <a href="about.html">運営者情報・プライバシーポリシー</a></footer>
+<script src="tax.js?v=2026a"></script>
+<script>
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+// 副業の所得は、住民税の課税所得にそのまま足して近似する（所得割は副業分の10%を足す）
+function jumin(o, side) {
+  const e = TAX.estimate(o);
+  const kazei = Math.floor((e.kazeiJumin + side) / 1000) * 1000;
+  const wari = Math.floor(e.shotokuwari + (kazei - e.kazeiJumin) * 0.1);
+  const kinto = kazei > 0 ? 5000 : 0;
+  return { wari, kinto, total: wari + kinto };
+}
+function calc() {
+  const salary = Number($("salary").value) * 10000, side = (Number($("side").value) || 0) * 10000;
+  if (!(salary > 0) && !(side > 0)) { ["year", "month", "wari", "kinto", "sideTax"].forEach(i => $(i).textContent = "―"); return; }
+  const o = { salary, spouse: $("spouse").value === "1", ippan: +$("ippan").value, tokutei: +$("tokutei").value, shaho: $("shaho").value };
+  const r = jumin(o, side), r0 = jumin(o, 0);
+  $("year").textContent = yen(r.total);
+  $("month").textContent = yen(r.total / 12);
+  $("wari").textContent = yen(r.wari); $("kinto").textContent = yen(r.kinto);
+  $("sideLabel").hidden = $("sideTax").hidden = !(side > 0);
+  $("sideTax").textContent = yen(r.total - r0.total);
+}
+document.querySelectorAll("input,select").forEach(e => e.addEventListener("input", calc));
+calc();
+</script>
+</body>
+</html>
