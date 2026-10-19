@@ -33,7 +33,7 @@
     <label for="salary">今年の年収（額面・万円）<small>ボーナスを含む、税金などが引かれる前の金額。源泉徴収票の「支払金額」</small></label>
     <input id="salary" type="number" inputmode="numeric" min="0" step="10" placeholder="例：400">
     <label for="spouse">配偶者</label>
-    <select id="spouse"><option value="0">いない・共働き（扶養していない）</option><option value="1">扶養している（配偶者の年収123万円以下）</option></select>
+    <select id="spouse"><option value="0">いない・共働き（扶養していない）</option><option value="1">扶養している（配偶者の年収136万円以下）</option></select>
     <label for="ippan">扶養している家族（16〜18歳・23歳以上）</label>
     <select id="ippan"><option>0</option><option>1</option><option>2</option><option>3</option></select>
     <label for="tokutei">扶養している家族（19〜22歳）</label>
@@ -67,7 +67,7 @@
     </dl>
     <p class="warn" id="over" hidden>すでに上限の目安を超えています。超えた分は、ほぼ自己負担になります。</p>
   </div>
-  <p class="note">計算式：住民税の所得割額 × 20% ÷（90% − 所得税率 × 1.021）＋ 2,000円（総務省の計算式。1,000円未満切り捨て）。「年収から」は、社会保険料を年収の15%として見積もった目安です。住宅ローン控除・医療費控除・iDeCo などがある場合は、上限が変わります。</p>
+  <p class="note">計算式：住民税の所得割額 × 20% ÷（90% − 所得税率 × 1.021）＋ 2,000円（総務省の計算式。1,000円未満切り捨て）。「年収から」は、社会保険料を年収の15%として見積もった目安で、2026年分の税制改正（基礎控除の引き上げなど）を反映しています。住宅ローン控除・医療費控除・iDeCo などがある場合は、上限が変わります。</p>
 </div>
 
 <a class="cta" href="https://note.com/fresh_snake1249/n/naddcc3749ec0" rel="noopener">
@@ -78,7 +78,7 @@
 
 
 <h2>年収別の上限の早見表</h2>
-<p>会社員（給与収入のみ）・社会保険料を年収の約15%とした場合の目安です。「高校生」は16〜18歳、「大学生」は19〜22歳の扶養家族。共働きの夫婦は、それぞれの年収の「独身・共働き」の欄を見ます。</p>
+<p>会社員（給与収入のみ）・社会保険料を年収の約15%とした場合の目安です（2026年分の税制改正を反映）。「高校生」は16〜18歳、「大学生」は19〜22歳の扶養家族。共働きの夫婦は、それぞれの年収の「独身・共働き」の欄を見ます。</p>
 <div style="overflow-x:auto"><table>
   <tr><th>年収</th><th>独身・共働き</th><th>夫婦（配偶者を扶養）</th><th>夫婦＋高校生</th><th>夫婦＋高校生＋大学生</th></tr>
   <tr><td style="white-space:nowrap">200万円</td><td>1.5万</td><td>0.6万</td><td>—</td><td>—</td></tr>
@@ -87,9 +87,9 @@
   <tr><td style="white-space:nowrap">350万円</td><td>3.4万</td><td>2.6万</td><td>1.8万</td><td>0.5万</td></tr>
   <tr><td style="white-space:nowrap">400万円</td><td>4.2万</td><td>3.3万</td><td>2.5万</td><td>1.2万</td></tr>
   <tr><td style="white-space:nowrap">450万円</td><td>4.9万</td><td>4.1万</td><td>3.3万</td><td>2.0万</td></tr>
-  <tr><td style="white-space:nowrap">500万円</td><td>6.1万</td><td>4.9万</td><td>4.0万</td><td>2.8万</td></tr>
-  <tr><td style="white-space:nowrap">550万円</td><td>6.9万</td><td>6.0万</td><td>4.8万</td><td>3.5万</td></tr>
-  <tr><td style="white-space:nowrap">600万円</td><td>7.7万</td><td>6.9万</td><td>6.0万</td><td>4.3万</td></tr>
+  <tr><td style="white-space:nowrap">500万円</td><td>5.7万</td><td>4.9万</td><td>4.0万</td><td>2.8万</td></tr>
+  <tr><td style="white-space:nowrap">550万円</td><td>6.9万</td><td>5.7万</td><td>4.8万</td><td>3.5万</td></tr>
+  <tr><td style="white-space:nowrap">600万円</td><td>7.7万</td><td>6.9万</td><td>5.7万</td><td>4.3万</td></tr>
   <tr><td style="white-space:nowrap">650万円</td><td>8.5万</td><td>7.7万</td><td>6.8万</td><td>5.3万</td></tr>
   <tr><td style="white-space:nowrap">700万円</td><td>10.8万</td><td>8.6万</td><td>7.8万</td><td>6.6万</td></tr>
   <tr><td style="white-space:nowrap">750万円</td><td>11.8万</td><td>10.9万</td><td>8.7万</td><td>7.6万</td></tr>
@@ -129,7 +129,7 @@
 </main>
 <nav class="related"><strong>ほかの無料ツール：</strong><a href="tedori.html">年収から手取り</a> ／ <a href="iryohi.html">医療費控除</a> ／ <a href="fukugyo.html">副業の20万円ルール</a> ／ <a href="gensen.html">源泉徴収税額</a> ／ <a href="yachin.html">手取りから家賃の目安</a> ／ <a href="shoki.html">一人暮らしの初期費用</a> ／ <a href="hiwari.html">家賃の日割り</a> ／ <a href="koteihi.html">固定費の見直し</a> ／ <a href="denki.html">電気代</a> ／ <a href="chokin.html">貯金シミュレーター</a> ／ <a href="yukyu.html">有給休暇の日数</a> ／ <a href="lot.html">FX ロット計算</a></nav>
 <footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。 ／ <a href="about.html">運営者情報・プライバシーポリシー</a></footer>
-<script src="tax.js"></script>
+<script src="tax.js?v=2026a"></script>
 <script>
 const $ = id => document.getElementById(id);
 const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";

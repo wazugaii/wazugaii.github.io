@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>手取り計算ツール｜年収から手取り（年・月）がわかる・税金と社会保険料の内訳つき（無料）</title>
-<meta name="description" content="年収（額面）と家族構成を入れると、手取りの年額・月額の目安と、所得税・住民税・社会保険料の内訳を計算します。2025年からの基礎控除の引き上げにも対応。会社員向け・登録不要・無料。">
+<meta name="description" content="年収（額面）と家族構成を入れると、手取りの年額・月額の目安と、所得税・住民税・社会保険料の内訳を計算します。2026年分の税制改正（基礎控除の引き上げ・178万円の壁）に対応。会社員向け・登録不要・無料。">
 <link rel="canonical" href="https://wazugaii.github.io/tedori.html">
 <link rel="stylesheet" href="style.css">
 <style>details.opt{margin-top:14px}details.opt summary{cursor:pointer;color:var(--sub);font-size:14px}
@@ -23,7 +23,7 @@
   <label for="salary">年収（額面・万円）<small>ボーナスを含む、税金などが引かれる前の金額。源泉徴収票の「支払金額」</small></label>
   <input id="salary" type="number" inputmode="numeric" min="0" step="10" value="400">
   <label for="spouse">配偶者</label>
-  <select id="spouse"><option value="0">いない・共働き（扶養していない）</option><option value="1">扶養している（配偶者の年収123万円以下）</option></select>
+  <select id="spouse"><option value="0">いない・共働き（扶養していない）</option><option value="1">扶養している（配偶者の年収136万円以下）</option></select>
   <label for="ippan">扶養している家族（16〜18歳・23歳以上）</label>
   <select id="ippan"><option>0</option><option>1</option><option>2</option><option>3</option></select>
   <label for="tokutei">扶養している家族（19〜22歳）</label>
@@ -49,7 +49,7 @@
     <div class="bar" aria-hidden="true"><span id="b1" style="background:var(--accent)"></span><span id="b2" style="background:#8a94a3"></span><span id="b3" style="background:#e8892f"></span><span id="b4" style="background:#c0504d"></span></div>
     <div class="legend"><span><i style="background:var(--accent)"></i>手取り</span><span><i style="background:#8a94a3"></i>社会保険料</span><span><i style="background:#e8892f"></i>所得税</span><span><i style="background:#c0504d"></i>住民税</span></div>
   </div>
-  <p class="note">社会保険料は年収の約15%（健康保険・厚生年金・雇用保険の合計の目安）として計算しています。住民税は本来「前の年の収入」で決まるので、去年と年収が同じ場合の目安です。2025年分からの基礎控除の引き上げ（所得に応じて58万〜95万円）と、給与所得控除の最低額65万円に対応しています。</p>
+  <p class="note">社会保険料は年収の約15%（健康保険・厚生年金・雇用保険の合計の目安）として計算しています。住民税は本来「前の年の収入」で決まるので、去年と年収が同じ場合の目安です。2026年分の税制改正（基礎控除は所得に応じて62万〜104万円、給与所得控除の最低額は74万円。いわゆる「178万円の壁」）に対応しています。</p>
 </div>
 
 <h2>手取りがわかったら</h2>
@@ -69,7 +69,7 @@
 </main>
 <nav class="related"><strong>ほかの無料ツール：</strong><a href="furusato.html">ふるさと納税の上限</a> ／ <a href="iryohi.html">医療費控除</a> ／ <a href="fukugyo.html">副業の20万円ルール</a> ／ <a href="gensen.html">源泉徴収税額</a> ／ <a href="yachin.html">手取りから家賃の目安</a> ／ <a href="shoki.html">一人暮らしの初期費用</a> ／ <a href="hiwari.html">家賃の日割り</a> ／ <a href="koteihi.html">固定費の見直し</a> ／ <a href="denki.html">電気代</a> ／ <a href="chokin.html">貯金シミュレーター</a> ／ <a href="yukyu.html">有給休暇の日数</a> ／ <a href="lot.html">FX ロット計算</a></nav>
 <footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。 ／ <a href="about.html">運営者情報・プライバシーポリシー</a></footer>
-<script src="tax.js"></script>
+<script src="tax.js?v=2026a"></script>
 <script>
 const $ = id => document.getElementById(id);
 const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";

@@ -1,24 +1,23 @@
-// 会社員の年収から、所得・課税所得・住民税の所得割額を見積もる（2025年分以降の制度）
+// 会社員の年収から、所得・課税所得・住民税の所得割額を見積もる（2026年分＝令和8年度税制改正の内容）
 // 目安の計算。社会保険料は年収の約15%として見積もる（入力で変更可）
 const TAX = (() => {
-  // 給与所得控除（2025年分〜：最低65万円）
-  function kyuyoShotoku(s) {
+  // 給与所得控除（2026年分：最低保障額69万円。所得税は2026・2027年分の特例でさらに5万円上乗せの74万円）
+  function kyuyoShotoku(s, juminzei = false) {
     if (s <= 0) return 0;
+    const min = juminzei ? 690000 : 740000;
     let k;
-    if (s <= 1900000) k = 650000;
-    else if (s <= 3600000) k = s * 0.3 + 80000;
+    if (s <= 1900000) k = min;
+    else if (s <= 3600000) k = Math.max(min, s * 0.3 + 80000);
     else if (s <= 6600000) k = s * 0.2 + 440000;
     else if (s <= 8500000) k = s * 0.1 + 1100000;
     else k = 1950000;
     return Math.max(0, Math.floor(s - k));
   }
-  // 所得税の基礎控除（2025・2026年分）
+  // 所得税の基礎控除（2026・2027年分：本則62万円＋特例）
   function kisoShotokuzei(g) {
-    if (g <= 1320000) return 950000;
-    if (g <= 3360000) return 880000;
-    if (g <= 4890000) return 680000;
-    if (g <= 6550000) return 630000;
-    if (g <= 23500000) return 580000;
+    if (g <= 4890000) return 1040000;
+    if (g <= 6550000) return 670000;
+    if (g <= 23500000) return 620000;
     if (g <= 24000000) return 480000;
     if (g <= 24500000) return 320000;
     if (g <= 25000000) return 160000;
@@ -30,7 +29,7 @@ const TAX = (() => {
     if (g <= 25000000) return 150000;
     return 0;
   }
-  // 配偶者控除（配偶者の給与年収123万円以下）。本人の所得で減る
+  // 配偶者控除（配偶者の給与年収136万円以下）。本人の所得で減る
   function haigusha(g, has) {
     if (!has) return [0, 0];
     if (g <= 9000000) return [380000, 330000];
@@ -49,12 +48,12 @@ const TAX = (() => {
   }
   // salary: 年収（円）, spouse: 配偶者を扶養, ippan: 16〜18歳・23歳以上の扶養人数, tokutei: 19〜22歳の扶養人数, shaho: 社会保険料（円・省略で年収×15%）
   function estimate({ salary, spouse = false, ippan = 0, tokutei = 0, shaho }) {
-    const g = kyuyoShotoku(salary);
+    const g = kyuyoShotoku(salary), gj = kyuyoShotoku(salary, true);
     const sh = shaho == null || shaho === "" ? Math.round(salary * 0.15) : Number(shaho);
     const [hs, hj] = haigusha(g, spouse);
     const fuyoS = ippan * 380000 + tokutei * 630000, fuyoJ = ippan * 330000 + tokutei * 450000;
     const kazeiS = Math.max(0, Math.floor((g - sh - kisoShotokuzei(g) - hs - fuyoS) / 1000) * 1000);
-    const kazeiJ = Math.max(0, Math.floor((g - sh - kisoJuminzei(g) - hj - fuyoJ) / 1000) * 1000);
+    const kazeiJ = Math.max(0, Math.floor((gj - sh - kisoJuminzei(gj) - hj - fuyoJ) / 1000) * 1000);
     // 調整控除（人的控除の差）
     const sa = 50000 + (hj ? 50000 : 0) + ippan * 50000 + tokutei * 180000;
     const chosei = kazeiJ <= 2000000 ? Math.min(sa, kazeiJ) * 0.05 : Math.max((sa - (kazeiJ - 2000000)) * 0.05, 2500);
