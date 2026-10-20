@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026年の年末調整でいくら増える？計算ツール｜178万円の壁で減る所得税を年収から計算（無料）</title>
+<meta name="description" content="2026年分の税制改正（178万円の壁・基礎控除の引き上げ）で、去年と比べて所得税がいくら減るか、年末調整で戻るお金がいくら増えるかの目安を、年収と家族構成から計算します。登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/nenmatsu.html">
+<link rel="stylesheet" href="style.css">
+<style>details.opt{margin-top:14px}details.opt summary{cursor:pointer;color:var(--sub);font-size:14px}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a><span class="pr">このページには広告（PR）が含まれます</span></header>
+<main>
+<h1>2026年の年末調整でいくら増える？計算ツール</h1>
+<p class="lead">2026年分は「178万円の壁」の税制改正で、所得税が減る人がほとんどです。去年の制度と比べて所得税がいくら減るか（年末調整で戻るお金がいくら増えるか）の目安を計算します。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <label for="salary">今年の年収（額面・万円）<small>ボーナスを含む、税金などが引かれる前の見込み額</small></label>
+  <input id="salary" type="number" inputmode="numeric" min="0" step="10" value="400">
+  <label for="spouse">配偶者</label>
+  <select id="spouse"><option value="0">いない・共働き（扶養していない）</option><option value="1">扶養している</option></select>
+  <label for="ippan">扶養している家族（16〜18歳・23歳以上）</label>
+  <select id="ippan"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+  <label for="tokutei">扶養している家族（19〜22歳）</label>
+  <select id="tokutei"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+  <details class="opt"><summary>社会保険料を自分で入れる（わかる人だけ）</summary>
+    <label for="shaho">社会保険料（1年分・円）<small>入れなければ年収の15%として計算します</small></label>
+    <input id="shaho" type="number" inputmode="numeric" min="0" step="1000" placeholder="例：600000">
+  </details>
+
+  <div class="result" aria-live="polite">
+    <div>所得税が減る額（＝年末調整で戻るお金が増える目安）</div>
+    <div class="big" id="diff">―</div>
+    <dl>
+      <dt>去年の制度（2025年分）での所得税</dt><dd id="t25">―</dd>
+      <dt>今年の制度（2026年分）での所得税</dt><dd id="t26">―</dd>
+    </dl>
+  </div>
+  <p class="note">同じ年収・家族構成で、2025年分と2026年分の制度の所得税を比べた目安です（社会保険料は年収の約15%）。引き上げ分は毎月の給料から引かれる税金には反映されておらず、12月の年末調整でまとめて精算されます。実際の金額は、生命保険料控除・住宅ローン控除・毎月の源泉徴収の状況などで変わります。住民税は変わりません。</p>
+</div>
+
+<h2>2026年分で変わったこと（178万円の壁）</h2>
+<ul>
+  <li><strong>基礎控除</strong>：所得489万円以下の人は104万円（去年は所得に応じて58万〜95万円）</li>
+  <li><strong>給与所得控除の最低額</strong>：74万円（去年は65万円）</li>
+  <li><strong>扶養に入れられる家族の年収</strong>：136万円以下（去年は123万円以下）</li>
+</ul>
+<p>この2つの控除の合計（104万円＋74万円）が178万円になるので、給料だけの人は年収178万円まで所得税がかかりません。特に、<strong>年収500万〜650万円くらいの人</strong>は、税率が下がる人が多く、減る額が大きくなります。</p>
+<p>書類の書き方は<a href="https://note.com/fresh_snake1249/n/n80ec662cd17f">年末調整の書き方（2026年）</a>にまとめています。手取り全体は<a href="tedori.html">手取り計算ツール</a>で確認できます。</p>
+
+<a class="cta" href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe" rel="noopener">
+  <strong>戻ってきたお金の使い道を決めておくなら</strong><br>
+  予算と実績を比べて、使いすぎを色で知らせる「一人暮らしの家計簿・予算シート」（Excel / Google スプレッドシート・500円）
+</a>
+<p class="note" style="margin-top:8px">💡 家計簿・副業の収支・請求書・ふるさと納税・医療費控除の5つをまとめた<a href="https://note.com/fresh_snake1249/n/n3c719a8a34ff">「お金の管理シート5点セット」（1,500円・1,000円お得）</a>もあります。</p>
+<p class="note">このページの計算は目安です。正確な金額は、会社の年末調整の結果（源泉徴収票）でご確認ください。</p>
+</main>
+<nav class="related"><strong>ほかの無料ツール：</strong><a href="tedori.html">年収から手取り</a> ／ <a href="juminzei.html">住民税</a> ／ <a href="furusato.html">ふるさと納税の上限</a> ／ <a href="iryohi.html">医療費控除</a> ／ <a href="fukugyo.html">副業の20万円ルール</a> ／ <a href="gensen.html">源泉徴収税額</a> ／ <a href="yachin.html">手取りから家賃の目安</a> ／ <a href="shoki.html">一人暮らしの初期費用</a> ／ <a href="hiwari.html">家賃の日割り</a> ／ <a href="koteihi.html">固定費の見直し</a> ／ <a href="denki.html">電気代</a> ／ <a href="chokin.html">貯金シミュレーター</a> ／ <a href="yukyu.html">有給休暇の日数</a> ／ <a href="lot.html">FX ロット計算</a></nav>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。 ／ <a href="about.html">運営者情報・プライバシーポリシー</a></footer>
+<script src="tax.js?v=2026a"></script>
+<script>
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+// 2025年分の制度での所得税（比較用）
+function tax2025({ salary, spouse, ippan, tokutei, shaho }) {
+  let k;
+  if (salary <= 1900000) k = 650000; else if (salary <= 3600000) k = salary * 0.3 + 80000;
+  else if (salary <= 6600000) k = salary * 0.2 + 440000; else if (salary <= 8500000) k = salary * 0.1 + 1100000; else k = 1950000;
+  const g = Math.max(0, Math.floor(salary - k));
+  const sh = shaho == null || shaho === "" ? Math.round(salary * 0.15) : Number(shaho);
+  const kiso = g <= 1320000 ? 950000 : g <= 3360000 ? 880000 : g <= 4890000 ? 680000 : g <= 6550000 ? 630000 : g <= 23500000 ? 580000 : g <= 24000000 ? 480000 : g <= 24500000 ? 320000 : g <= 25000000 ? 160000 : 0;
+  const hs = !spouse ? 0 : g <= 9000000 ? 380000 : g <= 9500000 ? 260000 : g <= 10000000 ? 130000 : 0;
+  const kazei = Math.max(0, Math.floor((g - sh - kiso - hs - ippan * 380000 - tokutei * 630000) / 1000) * 1000);
+  return TAX.shotokuzei(kazei);
+}
+function calc() {
+  const salary = Number($("salary").value) * 10000;
+  if (!(salary > 0)) { ["diff", "t25", "t26"].forEach(i => $(i).textContent = "―"); return; }
+  const o = { salary, spouse: $("spouse").value === "1", ippan: +$("ippan").value, tokutei: +$("tokutei").value, shaho: $("shaho").value };
+  const a = tax2025(o), b = TAX.tedori(o).shotokuzei;
+  $("t25").textContent = yen(a); $("t26").textContent = yen(b);
+  $("diff").textContent = yen(Math.max(0, a - b));
+}
+document.querySelectorAll("input,select").forEach(e => e.addEventListener("input", calc));
+calc();
+</script>
+</body>
+</html>
