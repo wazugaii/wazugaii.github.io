@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ボーナスの手取り計算ツール｜賞与の額面から手取りと引かれる額の内訳がわかる（2026年・無料）</title>
+<meta name="description" content="ボーナス（賞与）の額面と毎月の給料、扶養の人数を入れると、手取りの目安と、社会保険料・所得税の内訳を計算します。国税庁の「賞与に対する源泉徴収税額の算出率の表（令和8年分）」と2026年度の保険料率で計算。会社員向け・登録不要・無料。">
+<link rel="canonical" href="https://wazugaii.github.io/bonus.html">
+<link rel="stylesheet" href="style.css?v=2026c">
+<style>details.opt{margin-top:14px}details.opt summary{cursor:pointer;color:var(--sub);font-size:14px}</style>
+</head>
+<body>
+<header><a href="index.html">← お金の計算ツール</a><span class="pr">このページには広告（PR）が含まれます</span></header>
+<main>
+<h1>ボーナスの手取り計算ツール</h1>
+<p class="lead">ボーナス（賞与）の額面と毎月の給料を入れると、手取りの目安と、引かれるお金の内訳がわかります。入力した数字はどこにも送信されません。</p>
+
+<div class="card">
+  <label for="bonus">ボーナスの額面（万円）<small>税金などが引かれる前の金額</small></label>
+  <input id="bonus" type="number" inputmode="decimal" min="0" step="1" value="40">
+  <label for="salary">毎月の給料の額面（万円）<small>ボーナスの前の月の給料。残業代や手当を含む、引かれる前の金額</small></label>
+  <input id="salary" type="number" inputmode="decimal" min="0" step="0.5" value="28">
+  <label for="fuyo">扶養している家族の人数<small>年収136万円以下の配偶者や、16歳以上の子など、扶養控除等申告書に書いた人数（16歳未満の子は数えません）</small></label>
+  <select id="fuyo"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select>
+  <label for="age">年齢</label>
+  <select id="age"><option value="0">39歳以下・65歳以上</option><option value="1">40〜64歳（介護保険料がかかる）</option></select>
+  <details class="opt"><summary>保険料率を自分で入れる（わかる人だけ）</summary>
+    <label for="kenpo">健康保険料率（本人負担・%）<small>協会けんぽの全国平均 9.9% の半分＝4.95%。都道府県や健康保険組合で違います</small></label>
+    <input id="kenpo" type="number" inputmode="decimal" min="0" step="0.01" value="4.95">
+  </details>
+
+  <div class="result" aria-live="polite">
+    <div>ボーナスの手取り（目安）</div>
+    <div class="big" id="tedori">―</div>
+    <dl>
+      <dt>健康保険料（介護保険料を含む）</dt><dd id="r_kenpo">―</dd>
+      <dt>厚生年金保険料</dt><dd id="r_nenkin">―</dd>
+      <dt>雇用保険料</dt><dd id="r_koyo">―</dd>
+      <dt>子ども・子育て支援金</dt><dd id="r_kodomo">―</dd>
+      <dt id="l_tax">所得税（復興特別所得税を含む）</dt><dd id="r_tax">―</dd>
+      <dt>手取りの割合</dt><dd id="r_pct">―</dd>
+    </dl>
+  </div>
+  <p class="note" id="warn" hidden></p>
+  <p class="note">所得税は、国税庁の「賞与に対する源泉徴収税額の算出率の表（令和8年分）」で計算しています。社会保険料は2026年度の料率（厚生年金 9.15%・雇用保険 0.5%・介護保険 0.81%・子ども・子育て支援金 0.115%、いずれも本人負担）の目安です。<strong>住民税はボーナスからは引かれません。</strong></p>
+</div>
+
+<h2>ボーナスから引かれるもの</h2>
+<p><strong>ボーナスの手取り ＝ 額面 − 社会保険料 − 所得税</strong>。手取りは額面の<strong>だいたい8割前後</strong>になる人が多いです。</p>
+<p><strong>社会保険料</strong>は、ボーナスの額（1,000円未満は切り捨て）に、毎月の給料と同じ率をかけて計算します。厚生年金は1回150万円までが対象です。</p>
+<p><strong>所得税</strong>は、毎月の給料とは計算方法が違います。「前の月の給料（社会保険料を引いたあと）」と「扶養の人数」で税率が決まり、その率を「ボーナス − 社会保険料」にかけます。そのため、<strong>毎月の給料が高い人ほど、ボーナスにかかる税率も高く</strong>なります。</p>
+<p>ボーナスで引かれた所得税は、<strong>年末調整で1年分まとめて計算し直されます</strong>。2026年は基礎控除が増えた（178万円の壁）ので、多くの人は年末調整で戻ってきます。くわしくは<a href="nenmatsu.html">2026年の年末調整でいくら増える？</a>で計算できます。</p>
+<p>年収全体の手取りは<a href="tedori.html">手取り計算ツール</a>、ボーナスで貯金の目標をたてるなら<a href="chokin.html">貯金シミュレーター</a>が使えます。</p>
+
+<a class="cta" href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe" rel="noopener">
+  <strong>ボーナスの使い道を決めるなら</strong><br>
+  予算と実績を比べて、使いすぎを色で知らせる「一人暮らしの家計簿・予算シート」（Excel / Google スプレッドシート・500円）
+</a>
+<p class="note" style="margin-top:8px">💡 家計簿・副業の収支・請求書・ふるさと納税・医療費控除の5つをまとめた<a href="https://note.com/fresh_snake1249/n/n3c719a8a34ff">「お金の管理シート5点セット」（1,500円・1,000円お得）</a>もあります。</p>
+<p class="note">このページの計算は目安です。実際の金額は、会社の給与明細（賞与明細）でご確認ください。</p>
+</main>
+<nav class="related"><strong>ほかの無料ツール：</strong><a href="tedori.html">年収から手取り</a> ／ <a href="nenmatsu.html">2026年の年末調整でいくら増える？</a> ／ <a href="juminzei.html">住民税</a> ／ <a href="furusato.html">ふるさと納税の上限</a> ／ <a href="iryohi.html">医療費控除</a> ／ <a href="fukugyo.html">副業の20万円ルール</a> ／ <a href="gensen.html">源泉徴収税額</a> ／ <a href="yachin.html">手取りから家賃の目安</a> ／ <a href="shoki.html">一人暮らしの初期費用</a> ／ <a href="hiwari.html">家賃の日割り</a> ／ <a href="koteihi.html">固定費の見直し</a> ／ <a href="denki.html">電気代</a> ／ <a href="chokin.html">貯金シミュレーター</a> ／ <a href="yukyu.html">有給休暇の日数</a> ／ <a href="lot.html">FX ロット計算</a></nav>
+<footer>お金の計算ツール ／ 計算はすべてお使いのブラウザの中で行い、入力内容は送信・保存しません。 ／ <a href="about.html">運営者情報・プライバシーポリシー</a></footer>
+<script>
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString("ja-JP") + " 円";
+// 国税庁「賞与に対する源泉徴収税額の算出率の表（令和8年分）」甲欄。LB[扶養人数] は各税率が始まる「前月の社会保険料等控除後の給与」（千円）
+const R = [2.042, 4.084, 6.126, 8.168, 10.21, 12.252, 14.294, 16.336, 18.378, 20.42, 22.462, 24.504, 26.546, 28.588, 30.63, 32.672, 35.735, 38.798, 41.861, 45.945];
+const LB = [[82, 94, 260, 309, 342, 372, 402, 433, 520, 605, 684, 715, 752, 795, 854, 922, 1318, 1521, 2621, 3495], [107, 250, 289, 346, 373, 401, 430, 463, 520, 621, 705, 739, 778, 821, 882, 952, 1342, 1526, 2645, 3527], [143, 276, 321, 377, 400, 426, 457, 492, 525, 636, 728, 764, 804, 848, 910, 983, 1367, 1526, 2669, 3559], [181, 300, 354, 405, 424, 452, 484, 517, 550, 651, 751, 788, 830, 876, 938, 1013, 1391, 1538, 2693, 3590], [218, 300, 387, 431, 452, 477, 509, 540, 577, 666, 774, 813, 856, 903, 966, 1044, 1416, 1555, 2716, 3622], [251, 304, 412, 457, 479, 503, 531, 564, 604, 681, 798, 838, 881, 930, 994, 1074, 1440, 1555, 2740, 3654], [284, 343, 438, 483, 505, 527, 553, 589, 630, 697, 821, 862, 907, 957, 1022, 1104, 1464, 1555, 2764, 3685], [317, 383, 463, 508, 529, 552, 578, 614, 657, 708, 845, 887, 933, 985, 1051, 1135, 1489, 1583, 2788, 3717]];
+function rateOf(prevSen, fuyo) {
+  const lb = LB[Math.min(fuyo, 7)];
+  let r = 0;
+  lb.forEach((b, i) => { if (prevSen >= b) r = R[i]; });
+  return r;
+}
+// 本人負担の料率（2026年度）
+const NENKIN = 0.0915, KOYO = 0.005, KAIGO = 0.0081, KODOMO = 0.00115;
+function calc() {
+  const bonus = Number($("bonus").value) * 10000, salary = Number($("salary").value) * 10000;
+  const fuyo = Number($("fuyo").value), kaigo = $("age").value === "1";
+  const kenpoRate = (Number($("kenpo").value) || 0) / 100;
+  if (!(bonus > 0)) { ["tedori", "r_kenpo", "r_nenkin", "r_koyo", "r_kodomo", "r_tax", "r_pct"].forEach(i => $(i).textContent = "―"); $("warn").hidden = true; return; }
+  const std = Math.floor(bonus / 1000) * 1000; // 標準賞与額
+  const kenpo = Math.round(std * (kenpoRate + (kaigo ? KAIGO : 0)));
+  const nenkin = Math.round(Math.min(std, 1500000) * NENKIN);
+  const kodomo = Math.round(std * KODOMO);
+  const koyo = Math.round(bonus * KOYO);
+  const shaho = kenpo + nenkin + kodomo + koyo;
+  // 前月の給料も同じ料率で社会保険料を引いた額とみなす
+  const mRate = kenpoRate + (kaigo ? KAIGO : 0) + NENKIN + KODOMO + KOYO;
+  const prev = salary * (1 - mRate);
+  const rate = rateOf(prev / 1000, fuyo);
+  const base = bonus - shaho;
+  const tax = Math.floor(Math.max(0, base) * rate / 100);
+  const ted = bonus - shaho - tax;
+  $("tedori").textContent = yen(ted);
+  $("r_kenpo").textContent = yen(kenpo); $("r_nenkin").textContent = yen(nenkin);
+  $("r_koyo").textContent = yen(koyo); $("r_kodomo").textContent = yen(kodomo);
+  $("l_tax").textContent = `所得税（税率 ${rate}%・復興特別所得税を含む）`;
+  $("r_tax").textContent = yen(tax);
+  $("r_pct").textContent = (ted / bonus * 100).toFixed(1) + " %";
+  const w = $("warn");
+  if (!(salary > 0)) { w.hidden = false; w.textContent = "前の月に給料がない場合は、所得税の計算方法が変わります（この計算より多く引かれることがあります）。"; }
+  else if (base > prev * 10) { w.hidden = false; w.textContent = "ボーナスが前の月の給料（社会保険料を引いたあと）の10倍を超えるときは、所得税の計算方法が変わります（この計算と違う額になることがあります）。"; }
+  else w.hidden = true;
+}
+document.querySelectorAll("input,select").forEach(e => e.addEventListener("input", calc));
+calc();
+</script>
+</body>
+</html>
