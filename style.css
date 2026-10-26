@@ -126,3 +126,5 @@ footer a { color: inherit; }
 .adbox a[rel~=sponsored] { display: block; text-align: center; padding: 12px 14px; border-radius: 10px; background: var(--cta-line); color: #fff; font-weight: 800; text-decoration: none; }
 .adbox a[rel~=sponsored]::after { content: " ›"; }
 .adbox a[rel~=sponsored]:hover { filter: brightness(1.06); }
+.adbox li { position: relative; }
+.adbox li img { position: absolute; left: 0; top: 0; width: 1px; height: 1px; }
