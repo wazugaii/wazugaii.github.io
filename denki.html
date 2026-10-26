@@ -6,7 +6,7 @@
 <title>電気代の計算ツール｜家電を選ぶだけで1時間・1か月の電気代がわかる（消費電力がわからなくてもOK・無料）</title>
 <meta name="description" content="エアコン・こたつ・電気ストーブ・ドライヤーなど、家電を選んで使う時間を決めるだけで、1時間・1日・1か月の電気代を計算します。複数の家電の合計も出せます。登録不要・無料。">
 <link rel="canonical" href="https://wazugaii.github.io/denki.html">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2026b">
 <style>
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
 .chips button{font-size:14px;padding:7px 12px;border:1px solid var(--field-line);border-radius:999px;background:var(--field);color:var(--text);cursor:pointer}
@@ -53,19 +53,20 @@ details.opt{margin-top:16px}details.opt summary{cursor:pointer;color:var(--sub);
   <p class="note">家電の消費電力は、よくある製品の目安です。エアコンや冷蔵庫は、温度や季節、製品の新しさで大きく変わります。正確に知りたいときは、本体のラベルの「消費電力」を各家電の「消費電力を自分で入れる」に入れてください。</p>
 </div>
 
-<h2>電気代の計算のしかた</h2>
-<p>電気代 ＝ 消費電力（W）÷ 1000 × 使う時間 × 単価（円/kWh）。たとえば 1,200W のドライヤーを 10分使うと、1.2 × 1/6 × 31 ＝ 約6円です。エアコンは、部屋が暖まった（冷えた）あとは消費電力が下がるので、このツールでは平均的な値を使っています。</p>
-<p><strong>冬の電気代を下げるには</strong>、部屋全体を暖めるエアコンより、こたつや電気毛布など体の近くを暖めるものを組み合わせると下がりやすくなります。上のツールで比べてみてください。くわしくは<a href="https://note.com/fresh_snake1249/n/n36007f9c02bc">冬の暖房、電気代がいちばん安いのはどれ？</a>にまとめています。</p>
-<p><strong>毎月の固定費を見直すなら</strong>、<a href="koteihi.html">固定費の見直しシミュレーター</a>で、電気・スマホ・サブスクなどをまとめて計算できます。</p>
-
 <div class="card adbox">
   <p class="adlabel">PR</p>
   <strong>電気の料金プランも見直すなら</strong>
+  <p id="adhint" style="margin:6px 0 0;font-weight:700"></p>
   <p style="margin:6px 0 4px">Looopでんきは、電力の市場価格に合わせて30分ごとに単価が変わる「市場連動型」のプランです。昼間など市場が安い時間に電気を使える人は安くなることがある一方、寒い日の夕方など市場が高い時間帯は割高になることもあります。今の使用量で料金を比べてから検討するのが安心です。くわしい仕組みは<a href="https://note.com/fresh_snake1249/n/nea1ee1165799">電力会社を切り替えると電気代は下がる？</a>にまとめています。</p>
   <ul>
     <li><a href="https://px.a8.net/svt/ejp?a8mat=4BEK9F+DBVECY+4H9U+BX3J6" rel="nofollow sponsored">Looopでんき（公式サイト）</a><img border="0" width="1" height="1" src="https://www16.a8.net/0.gif?a8mat=4BEK9F+DBVECY+4H9U+BX3J6" alt=""></li>
   </ul>
 </div>
+
+<h2>電気代の計算のしかた</h2>
+<p>電気代 ＝ 消費電力（W）÷ 1000 × 使う時間 × 単価（円/kWh）。たとえば 1,200W のドライヤーを 10分使うと、1.2 × 1/6 × 31 ＝ 約6円です。エアコンは、部屋が暖まった（冷えた）あとは消費電力が下がるので、このツールでは平均的な値を使っています。</p>
+<p><strong>冬の電気代を下げるには</strong>、部屋全体を暖めるエアコンより、こたつや電気毛布など体の近くを暖めるものを組み合わせると下がりやすくなります。上のツールで比べてみてください。くわしくは<a href="https://note.com/fresh_snake1249/n/n36007f9c02bc">冬の暖房、電気代がいちばん安いのはどれ？</a>にまとめています。</p>
+<p><strong>毎月の固定費を見直すなら</strong>、<a href="koteihi.html">固定費の見直しシミュレーター</a>で、電気・スマホ・サブスクなどをまとめて計算できます。</p>
 
 <a class="cta" href="https://note.com/fresh_snake1249/n/n11d45d3d8dfe" rel="noopener">
   <strong>光熱費を含めた毎月のお金を管理するなら</strong><br>
@@ -127,6 +128,7 @@ function calc() {
   });
   const none = !document.querySelector("#rows .item");
   $("day").textContent = none ? "―" : yen(perDay); $("month").textContent = none ? "家電をタップしてください" : yen(perDay * days); $("year").textContent = none ? "―" : yen(perDay * days * 12);
+  $("adhint").textContent = none ? "" : `いまの使い方だと、電気代は1年で約${yen(perDay * days * 12)}。プランによって単価が変わります。`;
 }
 $("price").addEventListener("input", calc); $("days").addEventListener("input", calc);
 addItem(0); addItem(2, 1);
